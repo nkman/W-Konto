@@ -17,4 +17,6 @@ namespace konto
             InitializeComponent();
         }
     }
+
+    //Contents of json
 }
