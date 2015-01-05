@@ -55,9 +55,8 @@ namespace konto
                 }
             };
 
-            json = JsonConvert.SerializeObject(dataToSend.data);
+            json = JsonConvert.SerializeObject(dataToSend.data[0]);
             
-            //HttpWebRequest 
             string a = config.signupUrl();
             System.Diagnostics.Debug.WriteLine(a);
             PostJsonRequest();
@@ -90,6 +89,7 @@ namespace konto
 
             try
             {
+                System.Diagnostics.Debug.WriteLine(json);
                 HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
                 HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
                 string responseString = "";
