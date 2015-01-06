@@ -105,7 +105,6 @@ namespace konto
                 if (result.status == 1)
                 {
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are Logged in !!", "Konto", MessageBoxButton.OK)));
-                    //Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative))));
                 }
                 else
                 {
