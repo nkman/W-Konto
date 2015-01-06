@@ -55,6 +55,14 @@ namespace konto
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            using (DbDataContext db = new DbDataContext(DbDataContext.DBConnectionString))
+            {
+                if (db.DatabaseExists() == false)
+                {
+                    db.CreateDatabase();
+                }
+            }
+
         }
 
         // Code to execute when a contract activation such as a file open or save picker returns 

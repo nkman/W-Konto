@@ -16,7 +16,7 @@ namespace konto
     }
 
     [Table]
-    public class user : INotifyPropertyChanged, INotifyPropertyChanging
+    public class User : INotifyPropertyChanged, INotifyPropertyChanging
     {
         // Define ID: private field, public property and database column.
         private int _userId;
@@ -106,7 +106,7 @@ namespace konto
         private string _userid;
 
         [Column]
-        public string UserId
+        public string User_Id
         {
             get
             {
@@ -175,5 +175,19 @@ namespace konto
         }
 
         #endregion
+    }
+
+
+    public class DbDataContext : DataContext
+    {
+        public static string DBConnectionString = "Data Source=isostore:/Konto.sdf";
+
+        // Pass the connection string to the base class.
+        public DbDataContext(string connectionString)
+            : base(connectionString)
+        { }
+
+        // Specify a single table for the to-do items.
+        public Table<User> users;
     }
 }
