@@ -15,6 +15,8 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
+using Newtonsoft.Json;
+
 namespace konto
 {
     public partial class LoggedInPage : PhoneApplicationPage, INotifyPropertyChanged
@@ -52,7 +54,7 @@ namespace konto
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            var userInDB = from User todo in userDB.users select todo;
+            var userInDB = from User _user_ in userDB.users select _user_;
             users = new ObservableCollection<User>(userInDB);
             base.OnNavigatedTo(e);
         }
@@ -69,6 +71,15 @@ namespace konto
             var userInDB = from User todo in userDB.users select todo;
             users = new ObservableCollection<User>(userInDB);
 
+            var dbData = users.ToList();
+            System.Diagnostics.Debug.WriteLine(dbData.ToString());
+            System.Diagnostics.Debug.WriteLine(dbData[0]);
+            System.Diagnostics.Debug.WriteLine(dbData.Count);
+
+            //string dogCsv = string.Join(",", dbData.ToArray());
+            string _t = JsonConvert.SerializeObject(dbData);
+            //Login.dataFromLoginUrl t = JsonConvert.SerializeObject<Login.dataFromLoginUrl>(dbData.ToString());
+            System.Diagnostics.Debug.WriteLine(_t);
             User newUser = new User { 
                 UserName = result.username,
                 FirstName = result.firstname,
@@ -78,7 +89,7 @@ namespace konto
                 IsLoggedIn = true
             };
 
-            System.Diagnostics.Debug.WriteLine(result.username);
+            //System.Diagnostics.Debug.WriteLine(result.username);
 
             try
             {
