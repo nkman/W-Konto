@@ -50,7 +50,6 @@ namespace konto
             string _username = username.Text;
             string _password = password.Password;
 
-            var config = new urlConfig();
             var dataToSend = new DataObject();
             dataToSend.data = new List<Item>{
                 new Item {
@@ -62,9 +61,6 @@ namespace konto
             };
 
             json = JsonConvert.SerializeObject(dataToSend.data[0]);
-            
-            string a = config.signupUrl();
-            System.Diagnostics.Debug.WriteLine(a);
             PostJsonRequest();
         }
 
@@ -94,10 +90,8 @@ namespace konto
 
         void GetResponsetStreamCallback(IAsyncResult callbackResult)
         {
-
             try
             {
-                //System.Diagnostics.Debug.WriteLine(json);
                 HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
                 HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
                 string responseString = "";
@@ -112,13 +106,11 @@ namespace konto
                 if (result.status == "1")
                 {
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are signed up !!", "Konto", MessageBoxButton.OK)));
-                    //MessageBox.Show("You are signed up !!", "Konto", MessageBoxButton.OKCancel);
                     Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative))));
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine(result.message);
-                    //MessageBox.Show(result.message, "Konto", MessageBoxButton.OKCancel);
+                    Dispatcher.BeginInvoke(new Action(() => MessageBox.Show(result.message, "Konto", MessageBoxButton.OK)));
                 }
 
             }
@@ -127,11 +119,5 @@ namespace konto
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
         }
-
-        public void Q(){
-            
-        }
     }
-
-    //Contents of json
 }
