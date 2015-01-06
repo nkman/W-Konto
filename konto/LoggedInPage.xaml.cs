@@ -13,6 +13,7 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace konto
 {
@@ -20,7 +21,8 @@ namespace konto
     {
         // Data context for the local database
         private DbDataContext userDB;
-
+        
+        //public class<Login> _login;
         // Define an observable collection property that controls can bind to.
         private ObservableCollection<User> _userDetail;
         public ObservableCollection<User> users
@@ -39,6 +41,7 @@ namespace konto
             }
         }
 
+
         public LoggedInPage()
         {
             InitializeComponent();
@@ -49,13 +52,8 @@ namespace konto
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            // Define the query to gather all of the to-do items.
             var userInDB = from User todo in userDB.users select todo;
-
-            // Execute the query and place the results into a collection.
             users = new ObservableCollection<User>(userInDB);
-
-            // Call the base method.
             base.OnNavigatedTo(e);
         }
 
@@ -66,6 +64,34 @@ namespace konto
         }
 
 
+        public void adduserInDb(Login.dataFromLoginUrl result)
+        {
+            var userInDB = from User todo in userDB.users select todo;
+            users = new ObservableCollection<User>(userInDB);
+
+            User newUser = new User { 
+                UserName = result.username,
+                FirstName = result.firstname,
+                LastName = result.lastname,
+                User_Id = result.user_id,
+                UserId = 1,
+                IsLoggedIn = true
+            };
+
+            System.Diagnostics.Debug.WriteLine(result.username);
+
+            try
+            {
+                users.Add(newUser);
+                userDB.users.InsertOnSubmit(newUser);
+                userDB.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+            
+        }
 
         #region INotifyPropertyChanged Members
 
@@ -80,5 +106,35 @@ namespace konto
             }
         }
         #endregion
+    }
+
+    public class loggedInPageHelper
+    {
+        public LoggedInPage _loggedInPage;
+        public void helperFunc(Login.dataFromLoginUrl result)
+        {
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.adduserInDb(result));
+        }
+
+    }
+
+
+    public static class UIThread
+    {
+        private static readonly Dispatcher Dispatcher;
+
+        static UIThread()
+        {
+            Dispatcher = Deployment.Current.Dispatcher;
+        }
+
+        public static void Invoke(Action action)
+        {
+            if (Dispatcher.CheckAccess())
+                action.Invoke();
+            else
+                Dispatcher.BeginInvoke(action);
+        }
     }
 }

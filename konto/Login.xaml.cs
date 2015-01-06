@@ -10,15 +10,26 @@ using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
+using konto.Resources;
+
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace konto
 {
     public partial class Login : PhoneApplicationPage
     {
+        private DbDataContext userDB;
         public static string json;
+        
         public Login()
         {
             InitializeComponent();
+            userDB = new DbDataContext(DbDataContext.DBConnectionString);
+            this.DataContext = this;
+            
         }
 
         public class Item
@@ -32,7 +43,7 @@ namespace konto
             public List<Item> data { get; set; }
         }
 
-        class dataFromLoginUrl
+        public class dataFromLoginUrl
         {
             public string firstname { get; set; }
             public string username { get; set; }
@@ -101,10 +112,13 @@ namespace konto
                 responseString = responseString.Replace("\"{", "{");
                 responseString = responseString.Replace("}\"", "}");
                 dataFromLoginUrl result = JsonConvert.DeserializeObject<dataFromLoginUrl>(responseString.Replace("\\", ""));
+                konto.loggedInPageHelper _loggedInPage = new konto.loggedInPageHelper();
+                
 
                 if (result.status == 1)
                 {
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are Logged in !!", "Konto", MessageBoxButton.OK)));
+                    _loggedInPage.helperFunc(result);
                     //Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative))));
                 }
                 else
@@ -116,7 +130,10 @@ namespace konto
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
+                Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You do not have working internet", "Konto", MessageBoxButton.OK)));
             }
         }
+
+        
     }
 }
