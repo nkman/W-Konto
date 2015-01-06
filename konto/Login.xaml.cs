@@ -39,6 +39,7 @@ namespace konto
             public int status { get; set; }
             public string user_id { get; set; }
             public string lastname { get; set; }
+            public string message { get; set; }
         }
 
         public void LoginUser(object sender, RoutedEventArgs e)
@@ -108,7 +109,7 @@ namespace konto
                 }
                 else
                 {
-                    //Dispatcher.BeginInvoke(new Action(() => MessageBox.Show(result.message, "Konto", MessageBoxButton.OK)));
+                    Dispatcher.BeginInvoke(new Action(() => MessageBox.Show(result.message, "Konto", MessageBoxButton.OK)));
                 }
 
             }
