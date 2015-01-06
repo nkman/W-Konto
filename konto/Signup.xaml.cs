@@ -36,6 +36,12 @@ namespace konto
             public List<Item> data { get; set; }
         }
 
+        class dataFromSignUpURL
+        {
+            public string status;
+            public string message;
+        }
+
         public void SignupUser(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Sign up");
@@ -70,6 +76,8 @@ namespace konto
             HttpWebRequest spAuthReq = HttpWebRequest.Create(AuthServiceUri) as HttpWebRequest;
             spAuthReq.ContentType = "application/json";
             spAuthReq.Method = "POST";
+
+            spAuthReq.Headers["Authorization"] = config.apiKey();
             spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
         }
 
@@ -89,7 +97,7 @@ namespace konto
 
             try
             {
-                System.Diagnostics.Debug.WriteLine(json);
+                //System.Diagnostics.Debug.WriteLine(json);
                 HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
                 HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
                 string responseString = "";
@@ -99,13 +107,29 @@ namespace konto
                 streamResponse.Close();
                 reader.Close();
                 response.Close();
-                string result = responseString;
-                System.Diagnostics.Debug.WriteLine("Okay "+result);
+                dataFromSignUpURL result = JsonConvert.DeserializeObject <dataFromSignUpURL>(responseString);
+
+                if (result.status == "1")
+                {
+                    Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are signed up !!", "Konto", MessageBoxButton.OK)));
+                    //MessageBox.Show("You are signed up !!", "Konto", MessageBoxButton.OKCancel);
+                    Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative))));
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine(result.message);
+                    //MessageBox.Show(result.message, "Konto", MessageBoxButton.OKCancel);
+                }
+
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("NOOOO "+ e.ToString());
+                System.Diagnostics.Debug.WriteLine(e.ToString());
             }
+        }
+
+        public void Q(){
+            
         }
     }
 
