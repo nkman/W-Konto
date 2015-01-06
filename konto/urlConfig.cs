@@ -68,5 +68,9 @@ namespace konto
             return homeUrl() + notificationaccepturl;
         }
 
+        public string apiKey()
+        {
+            return "de0464e0-552e-11e4-8c11-843497188779";
+        }
     }
 }
