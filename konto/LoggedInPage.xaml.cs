@@ -57,6 +57,11 @@ namespace konto
             var userInDB = from User _user_ in userDB.users select _user_;
             users = new ObservableCollection<User>(userInDB);
             base.OnNavigatedTo(e);
+            //Removes Back stack entries.
+            while (NavigationService.CanGoBack)
+            {
+                NavigationService.RemoveBackEntry();
+            }
         }
 
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)

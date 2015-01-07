@@ -77,6 +77,7 @@ namespace konto
             var config = new urlConfig();
             string AuthServiceUri = config.loginUrl();
             HttpWebRequest spAuthReq = HttpWebRequest.Create(AuthServiceUri) as HttpWebRequest;
+            spAuthReq.CookieContainer = new CookieContainer();
             spAuthReq.ContentType = "application/json";
             spAuthReq.Method = "POST";
 
@@ -101,10 +102,15 @@ namespace konto
             {
                 HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
                 HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
+                string cookies = JsonConvert.SerializeObject(response.Cookies);
+
+                System.Diagnostics.Debug.WriteLine(cookies);
+                
                 string responseString = "";
                 Stream streamResponse = response.GetResponseStream();
                 StreamReader reader = new StreamReader(streamResponse);
                 responseString = reader.ReadToEnd();
+                
                 streamResponse.Close();
                 reader.Close();
                 response.Close();
@@ -117,6 +123,7 @@ namespace konto
 
                 if (result.status == 1)
                 {
+                    //System.Diagnostics.Debug.WriteLine(response.Cookies.Count);
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are Logged in !!", "Konto", MessageBoxButton.OK)));
                     _loggedInPage.helperFunc(result);
                     Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative))));
@@ -134,6 +141,9 @@ namespace konto
             }
         }
 
-        
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+        }
     }
 }
