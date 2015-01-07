@@ -278,7 +278,8 @@ namespace konto
             : base(connectionString)
         { }
 
-        // Specify a single table for the to-do items.
+
         public Table<User> users;
+        public Table<Cookie> cookies;
     }
 }

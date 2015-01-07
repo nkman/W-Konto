@@ -24,9 +24,9 @@ namespace konto
         // Data context for the local database
         private DbDataContext userDB;
         
-        //public class<Login> _login;
-        // Define an observable collection property that controls can bind to.
         private ObservableCollection<User> _userDetail;
+        private ObservableCollection<Cookie> _cookieDetail;
+
         public ObservableCollection<User> users
         {
             get
@@ -43,20 +43,35 @@ namespace konto
             }
         }
 
+        public ObservableCollection<Cookie> cookies
+        {
+            get
+            {
+                return _cookieDetail;
+            }
+            set
+            {
+                if (_cookieDetail != value)
+                {
+                    _cookieDetail = value;
+                    NotifyPropertyChanged("CookieDetail");
+                }
+            }
+        }
 
         public LoggedInPage()
         {
             InitializeComponent();
-            userDB = new DbDataContext(DbDataContext.DBConnectionString);
 
+            userDB = new DbDataContext(DbDataContext.DBConnectionString);
             this.DataContext = this;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            var userInDB = from User _user_ in userDB.users select _user_;
-            users = new ObservableCollection<User>(userInDB);
-            base.OnNavigatedTo(e);
+            //var userInDB = from User _user_ in userDB.users select _user_;
+            //users = new ObservableCollection<User>(userInDB);
+            //base.OnNavigatedTo(e);
             //Removes Back stack entries.
             while (NavigationService.CanGoBack)
             {
@@ -77,14 +92,10 @@ namespace konto
             users = new ObservableCollection<User>(userInDB);
 
             var dbData = users.ToList();
-            System.Diagnostics.Debug.WriteLine(dbData.ToString());
-            System.Diagnostics.Debug.WriteLine(dbData[0]);
-            System.Diagnostics.Debug.WriteLine(dbData.Count);
 
-            //string dogCsv = string.Join(",", dbData.ToArray());
             string _t = JsonConvert.SerializeObject(dbData);
-            //Login.dataFromLoginUrl t = JsonConvert.SerializeObject<Login.dataFromLoginUrl>(dbData.ToString());
             System.Diagnostics.Debug.WriteLine(_t);
+
             User newUser = new User { 
                 UserName = result.username,
                 FirstName = result.firstname,
@@ -109,6 +120,46 @@ namespace konto
             
         }
 
+        public void addCookieInDb(List<Login.cookieFromLoginUrl> result){
+            var cookieInDB = from Cookie _cookie_ in userDB.cookies select _cookie_;
+            System.Diagnostics.Debug.WriteLine(cookieInDB);
+
+            try
+            {
+                cookies = new ObservableCollection<Cookie>(cookieInDB);
+                System.Diagnostics.Debug.WriteLine(cookies);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+            
+
+            var dbData = cookies.ToList();
+
+            string _t = JsonConvert.SerializeObject(dbData);
+            System.Diagnostics.Debug.WriteLine(_t);
+
+            
+            Cookie newCookie = new Cookie {
+                tea = result[0].Value,
+                user = result[1].Value
+            };
+
+            //System.Diagnostics.Debug.WriteLine(result.username);
+
+            try
+            {
+                cookies.Add(newCookie);
+                userDB.cookies.InsertOnSubmit(newCookie);
+                userDB.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -127,10 +178,11 @@ namespace konto
     public class loggedInPageHelper
     {
         public LoggedInPage _loggedInPage;
-        public void helperFunc(Login.dataFromLoginUrl result)
+        public void helperFunc(Login.dataFromLoginUrl result, List<Login.cookieFromLoginUrl> _cookie)
         {
             UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
             UIThread.Invoke(() => _loggedInPage.adduserInDb(result));
+            UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
         }
 
     }

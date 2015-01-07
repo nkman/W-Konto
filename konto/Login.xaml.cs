@@ -53,6 +53,23 @@ namespace konto
             public string message { get; set; }
         }
 
+        public class cookieFromLoginUrl
+        {
+            public string Comment { get; set; }
+            public string CommentUri { get; set; }
+            public bool HttpOnly { get; set; }
+            public bool Discard { get; set; }
+            public string Domain { get; set; }
+            public string Expired { get; set; }
+            public string Name { get; set; }
+            public string Path { get; set; }
+            public string Port { get; set; }
+            public bool Secure { get; set; }
+            public string TimeStamp { get; set; }
+            public string Value { get; set; }
+            public int Version { get; set; }
+        }
+
         public void LoginUser(object sender, RoutedEventArgs e)
         {
             string _username = username.Text;
@@ -114,18 +131,18 @@ namespace konto
                 streamResponse.Close();
                 reader.Close();
                 response.Close();
-                System.Diagnostics.Debug.WriteLine(responseString.Replace("\\",""));
                 responseString = responseString.Replace("\"{", "{");
                 responseString = responseString.Replace("}\"", "}");
                 dataFromLoginUrl result = JsonConvert.DeserializeObject<dataFromLoginUrl>(responseString.Replace("\\", ""));
                 konto.loggedInPageHelper _loggedInPage = new konto.loggedInPageHelper();
-                
+                List<cookieFromLoginUrl> _cookie = JsonConvert.DeserializeObject<List<cookieFromLoginUrl>>(cookies);
+                //cookieFromLoginUrl _cookie = JsonConvert.DeserializeObject<cookieFromLoginUrl>(cookies);
+                System.Diagnostics.Debug.WriteLine(_cookie);
 
                 if (result.status == 1)
                 {
-                    //System.Diagnostics.Debug.WriteLine(response.Cookies.Count);
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are Logged in !!", "Konto", MessageBoxButton.OK)));
-                    _loggedInPage.helperFunc(result);
+                    _loggedInPage.helperFunc(result, _cookie);
                     Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative))));
                 }
                 else

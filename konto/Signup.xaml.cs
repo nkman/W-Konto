@@ -36,10 +36,10 @@ namespace konto
             public List<Item> data { get; set; }
         }
 
-        class dataFromSignUpURL
+        public class dataFromSignUpURL
         {
-            public string status;
-            public string message;
+            public string status { get; set; }
+            public string message { get; set; }
         }
 
         public void SignupUser(object sender, RoutedEventArgs e)
