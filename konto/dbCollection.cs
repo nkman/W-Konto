@@ -16,6 +16,97 @@ namespace konto
     }
 
     [Table]
+    public class Cookie : INotifyPropertyChanged, INotifyPropertyChanging
+    {
+        private int _cookieId;
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int CookieId
+        {
+            get
+            {
+                return _cookieId;
+            }
+            set
+            {
+                if (_cookieId != value)
+                {
+                    NotifyPropertyChanging("CookieId");
+                    _cookieId = value;
+                    NotifyPropertyChanged("CookieId");
+                }
+            }
+        }
+
+        private string _tea;
+        [Column]
+        public string tea
+        {
+            get
+            {
+                return _tea;
+            }
+            set
+            {
+                if (_tea != value)
+                {
+                    NotifyPropertyChanging("tea");
+                    _tea = value;
+                    NotifyPropertyChanged("tea");
+                }
+            }
+        }
+
+        private string _user;
+        [Column]
+        public string user
+        {
+            get 
+            {
+                return _user;
+            }
+            set 
+            {
+                if (_user != value)
+                {
+                    NotifyPropertyChanging("user");
+                    _user = value;
+                    NotifyPropertyChanged("user");
+                }
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify the page that a data context property changed
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanging Members
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        // Used to notify the data context that a data context property is about to change
+        private void NotifyPropertyChanging(string propertyName)
+        {
+            if (PropertyChanging != null)
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
+
+    [Table]
     public class User : INotifyPropertyChanged, INotifyPropertyChanging
     {
         // Define ID: private field, public property and database column.

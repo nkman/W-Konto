@@ -119,7 +119,7 @@ namespace konto
                 {
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are Logged in !!", "Konto", MessageBoxButton.OK)));
                     _loggedInPage.helperFunc(result);
-                    //Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative))));
+                    Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative))));
                 }
                 else
                 {
