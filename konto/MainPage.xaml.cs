@@ -27,5 +27,9 @@ namespace konto
         {
             NavigationService.Navigate(new Uri("/Signup.xaml", UriKind.Relative));
         }
+        public void Local(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Signup.xaml", UriKind.Relative));
+        }
     }
 }

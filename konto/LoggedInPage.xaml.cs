@@ -173,6 +173,11 @@ namespace konto
             }
         }
         #endregion
+
+        private void Panorama_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     public class loggedInPageHelper
