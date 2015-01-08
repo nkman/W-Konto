@@ -207,10 +207,12 @@ namespace konto
         {
             
             Negetive _negetive = _result.negetive;
+            loggedInPageHelper _loggedInPageHelper = new loggedInPageHelper();
             for (int i = 0; i < _negetive.negetive.Count; i++)
             {
                 //System.Diagnostics.Debug.WriteLine(_negetive.negetive[i][3]);
-                NotificationInDb _notificationInDb = new NotificationInDb{
+                Notification _notificationInDb = new Notification
+                {
                     Amount = Convert.ToInt32(_negetive.negetive[i][3]),
                     Notice_id = (string)_negetive.negetive[i][0],
                     IsPositive = false,
@@ -218,13 +220,14 @@ namespace konto
                     IsTracking = false,
                     Name = _negetive.name[i]
                 };
+                _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
 
             Positive _positive = _result.positive;
             for (int i = 0; i < _positive.positive.Count; i++)
             {
-                NotificationInDb _notificationInDb = new NotificationInDb
+                Notification _notificationInDb = new Notification
                 {
                     Amount = Convert.ToInt32(_positive.positive[i][3]),
                     Notice_id = (string)_positive.positive[i][0],
@@ -233,13 +236,14 @@ namespace konto
                     IsTracking = false,
                     Name = _positive.name[i]
                 };
+                _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
 
             Track _track = _result.track;
             for (int i = 0; i < _track.unread.Count; i++)
             {
-                NotificationInDb _notificationInDb = new NotificationInDb
+                Notification _notificationInDb = new Notification
                 {
                     Notice_id = (string)_track.unread[i][0],
                     IsPositive = false,
@@ -247,6 +251,7 @@ namespace konto
                     IsTracking = true,
                     Name = (string)_track.unread[i][2]
                 };
+                _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
         }

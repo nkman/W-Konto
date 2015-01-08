@@ -168,6 +168,34 @@ namespace konto
             }
         }
 
+        public void NotificationSaveInDb(Notification result)
+        {
+            var noticeInDb = from Notification _notice_ in userDB.notification select _notice_;
+            //System.Diagnostics.Debug.WriteLine(cookieInDB);
+
+            try
+            {
+                notification = new ObservableCollection<Notification>(noticeInDb);
+                //System.Diagnostics.Debug.WriteLine(cookies);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+
+            try
+            {
+                notification.Add(result);
+                userDB.notification.InsertOnSubmit(result);
+                System.Diagnostics.Debug.WriteLine("Adding in Database");
+                userDB.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -198,6 +226,11 @@ namespace konto
             UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
         }
 
+        public void notificationPopulator(Notification result)
+        {
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
+        }
     }
 
 
@@ -251,15 +284,5 @@ namespace konto
         public int status { get; set; }
         public Track track { get; set; }
         public Positive positive { get; set; }
-    }
-
-    public class NotificationInDb
-    {
-        public string Name { get; set; }
-        public string Notice_id { get; set; }
-        public bool IsPositive { get; set; }
-        public bool IsNegetive { get; set; }
-        public bool IsTracking { get; set; }
-        public int Amount { get; set; }
     }
 }
