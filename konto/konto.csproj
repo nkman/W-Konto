@@ -95,6 +95,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="dbCollection.cs" />
+    <Compile Include="httpHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="LoggedInPage.xaml.cs">
       <DependentUpon>LoggedInPage.xaml</DependentUpon>
