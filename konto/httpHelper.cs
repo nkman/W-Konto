@@ -15,6 +15,9 @@ namespace konto
 {
     class httpHelper
     {
+        static string json;
+        static int variableUrlLocal;
+
         public class noticeRead
         {
             string notice_id { get; set; }
@@ -38,11 +41,41 @@ namespace konto
             string decision { get; set; }
         }
 
-        /*
-        private void PostJsonRequest(dynamic variableData, int variableUrl)
+        
+        internal static void RequestSender(dynamic variableData, int variableUrl)
         {
             var config = new urlConfig();
-            string AuthServiceUri = config.signupUrl();
+            string AuthServiceUri;
+
+            variableUrlLocal = variableData;
+            switch (variableUrlLocal)
+            {
+                case 0:
+                    AuthServiceUri = config.notificationUrl();
+                    json = JsonConvert.SerializeObject((noticeGet)variableData);
+                    break;
+                case 1:
+                    AuthServiceUri = config.notificationReadUrl();
+                    json = JsonConvert.SerializeObject((noticeRead)variableData);
+                    break;
+                case 2:
+                    AuthServiceUri = config.notificationAcceptUrl();
+                    json = JsonConvert.SerializeObject((noticeAcceptDeclineDelete)variableData);
+                    break;
+                case 3:
+                    AuthServiceUri = config.notificationDeclineUrl();
+                    json = JsonConvert.SerializeObject((noticeAcceptDeclineDelete)variableData);
+                    break;
+                case 4:
+                    AuthServiceUri = config.notificationDeleteUrl();
+                    json = JsonConvert.SerializeObject((noticeAcceptDeclineDelete)variableData);
+                    break;
+                default:
+                    AuthServiceUri = config.notificationUrl();
+                    json = JsonConvert.SerializeObject((noticeGet)variableData);
+                    break;
+            }
+            
             HttpWebRequest spAuthReq = HttpWebRequest.Create(AuthServiceUri) as HttpWebRequest;
             spAuthReq.ContentType = "application/json";
             spAuthReq.Method = "POST";
@@ -51,7 +84,7 @@ namespace konto
             spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
         }
 
-        void GetRequestStreamCallback(IAsyncResult callbackResult)
+        static void GetRequestStreamCallback(IAsyncResult callbackResult)
         {
             HttpWebRequest myRequest = (HttpWebRequest)callbackResult.AsyncState;
             Stream postStream = myRequest.EndGetRequestStream(callbackResult);
@@ -62,8 +95,9 @@ namespace konto
             myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
         }
 
-        void GetResponsetStreamCallback(IAsyncResult callbackResult)
+        static void GetResponsetStreamCallback(IAsyncResult callbackResult)
         {
+            dynamic result;
             try
             {
                 HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
@@ -75,16 +109,27 @@ namespace konto
                 streamResponse.Close();
                 reader.Close();
                 response.Close();
-                konto.Signup.dataFromSignUpURL result = JsonConvert.DeserializeObject<konto.Signup.dataFromSignUpURL>(responseString);
-
-                if (result.status == "1")
+                
+                switch (variableUrlLocal)
                 {
-                    Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are signed up !!", "Konto", MessageBoxButton.OK)));
-                    Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative))));
-                }
-                else
-                {
-                    Dispatcher.BeginInvoke(new Action(() => MessageBox.Show(result.message, "Konto", MessageBoxButton.OK)));
+                    case 0:
+                        result = JsonConvert.DeserializeObject<noticeGet>(responseString);
+                        break;
+                    case 1:
+                        result = JsonConvert.DeserializeObject<noticeRead>(responseString);
+                        break;
+                    case 2:
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
+                        break;
+                    case 3:
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
+                        break;
+                    case 4:
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
+                        break;
+                    default:
+                        result = JsonConvert.DeserializeObject<noticeGet>(responseString);
+                        break;
                 }
 
             }
@@ -93,6 +138,7 @@ namespace konto
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
         }
-         * */
+        
+
     }
 }
