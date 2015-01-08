@@ -252,4 +252,14 @@ namespace konto
         public Track track { get; set; }
         public Positive positive { get; set; }
     }
+
+    public class NotificationInDb
+    {
+        public string Name { get; set; }
+        public string Notice_id { get; set; }
+        public bool IsPositive { get; set; }
+        public bool IsNegetive { get; set; }
+        public bool IsTracking { get; set; }
+        public int Amount { get; set; }
+    }
 }

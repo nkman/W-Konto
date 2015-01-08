@@ -146,8 +146,8 @@ namespace konto
                 {
                     case 0:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
-                        System.Diagnostics.Debug.WriteLine(((RootObject)result).negetive.negetive[0][0]);
-                        
+                        RootObject R = (RootObject)result;
+                        iterateSavingNotification(R);
                         break;
                     case 1:
                         result = JsonConvert.DeserializeObject<noticeRead>(responseString);
@@ -201,6 +201,54 @@ namespace konto
         {
             public string tea { set; get; }
             public string user { set; get; }
+        }
+
+        public static void iterateSavingNotification(RootObject _result)
+        {
+            
+            Negetive _negetive = _result.negetive;
+            for (int i = 0; i < _negetive.negetive.Count; i++)
+            {
+                //System.Diagnostics.Debug.WriteLine(_negetive.negetive[i][3]);
+                NotificationInDb _notificationInDb = new NotificationInDb{
+                    Amount = Convert.ToInt32(_negetive.negetive[i][3]),
+                    Notice_id = (string)_negetive.negetive[i][0],
+                    IsPositive = false,
+                    IsNegetive = true,
+                    IsTracking = false,
+                    Name = _negetive.name[i]
+                };
+                //NotificationSaveInDb(_notificationInDb);
+            }
+
+            Positive _positive = _result.positive;
+            for (int i = 0; i < _positive.positive.Count; i++)
+            {
+                NotificationInDb _notificationInDb = new NotificationInDb
+                {
+                    Amount = Convert.ToInt32(_positive.positive[i][3]),
+                    Notice_id = (string)_positive.positive[i][0],
+                    IsPositive = true,
+                    IsNegetive = false,
+                    IsTracking = false,
+                    Name = _positive.name[i]
+                };
+                //NotificationSaveInDb(_notificationInDb);
+            }
+
+            Track _track = _result.track;
+            for (int i = 0; i < _track.unread.Count; i++)
+            {
+                NotificationInDb _notificationInDb = new NotificationInDb
+                {
+                    Notice_id = (string)_track.unread[i][0],
+                    IsPositive = false,
+                    IsNegetive = false,
+                    IsTracking = true,
+                    Name = (string)_track.unread[i][2]
+                };
+                //NotificationSaveInDb(_notificationInDb);
+            }
         }
     }
 }
