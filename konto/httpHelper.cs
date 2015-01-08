@@ -1,15 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using konto.Resources;
 
 namespace konto
 {
@@ -17,6 +18,31 @@ namespace konto
     {
         static string json;
         static int variableUrlLocal;
+
+        private static DbDataContext userDB;
+        private static ObservableCollection<Cookies> _cookieDetail;
+
+        public static cookieDb cake;
+
+        public static ObservableCollection<Cookies> cookies
+        {
+            get
+            {
+                return _cookieDetail;
+            }
+            set
+            {
+                if (_cookieDetail != value)
+                {
+                    _cookieDetail = value;
+                }
+            }
+        }
+
+        public httpHelper()
+        {
+            
+        }
 
         public class noticeRead
         {
@@ -32,7 +58,7 @@ namespace konto
 
         public class noticeGet
         {
-            int unread { get; set; }
+            public int unread { get; set; }
         }
 
         public class noticeAcceptDeclineDelete
@@ -47,7 +73,7 @@ namespace konto
             var config = new urlConfig();
             string AuthServiceUri;
 
-            variableUrlLocal = variableData;
+            variableUrlLocal = variableUrl;
             switch (variableUrlLocal)
             {
                 case 0:
@@ -77,9 +103,13 @@ namespace konto
             }
             
             HttpWebRequest spAuthReq = HttpWebRequest.Create(AuthServiceUri) as HttpWebRequest;
+            spAuthReq.CookieContainer = new CookieContainer();
+            addCookieInReq();
+            spAuthReq.CookieContainer.Add(new Uri(config.homeUrl()), new Cookie("tea", cake.tea));
+            spAuthReq.CookieContainer.Add(new Uri(config.homeUrl()), new Cookie("user", cake.user));
+
             spAuthReq.ContentType = "application/json";
             spAuthReq.Method = "POST";
-
             spAuthReq.Headers["Authorization"] = config.apiKey();
             spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
         }
@@ -89,6 +119,7 @@ namespace konto
             HttpWebRequest myRequest = (HttpWebRequest)callbackResult.AsyncState;
             Stream postStream = myRequest.EndGetRequestStream(callbackResult);
             string postData = json;
+            System.Diagnostics.Debug.WriteLine(postData);
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
             postStream.Write(byteArray, 0, byteArray.Length);
             postStream.Close();
@@ -109,7 +140,8 @@ namespace konto
                 streamResponse.Close();
                 reader.Close();
                 response.Close();
-                
+
+                System.Diagnostics.Debug.WriteLine(responseString);
                 switch (variableUrlLocal)
                 {
                     case 0:
@@ -138,7 +170,34 @@ namespace konto
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
         }
-        
 
+        static public void addCookieInReq()
+        {
+            cake = new cookieDb();
+            userDB = new DbDataContext(DbDataContext.DBConnectionString);
+            var cookieInDB = from Cookies _cookie_ in userDB.cookies select _cookie_;
+
+            try
+            {
+                cookies = new ObservableCollection<Cookies>(cookieInDB);
+                //System.Diagnostics.Debug.WriteLine(cookies);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+
+
+            var dbData = cookies.ToList();
+            cake.tea = dbData[0].tea;
+            cake.user = dbData[0].user;
+
+        }
+
+        public class cookieDb
+        {
+            public string tea { set; get; }
+            public string user { set; get; }
+        }
     }
 }

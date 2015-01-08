@@ -137,14 +137,20 @@ namespace konto
                 konto.loggedInPageHelper _loggedInPage = new konto.loggedInPageHelper();
                 List<cookieFromLoginUrl> _cookie = JsonConvert.DeserializeObject<List<cookieFromLoginUrl>>(cookies);
                 //cookieFromLoginUrl _cookie = JsonConvert.DeserializeObject<cookieFromLoginUrl>(cookies);
-                System.Diagnostics.Debug.WriteLine(_cookie);
+                //System.Diagnostics.Debug.WriteLine(_cookie);
 
                 if (result.status == 1)
                 {
                     Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("You are Logged in !!", "Konto", MessageBoxButton.OK)));
                     _loggedInPage.helperFunc(result, _cookie);
-                    httpHelper.noticeGet p = new httpHelper.noticeGet();
-                    httpHelper.RequestSender(p, 1);
+                    var p = new List<httpHelper.noticeGet>
+                    {
+                        new httpHelper.noticeGet {
+                            unread = 1
+                        }
+                    };
+
+                    httpHelper.RequestSender(p[0], 0);
                     Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative))));
                 }
                 else

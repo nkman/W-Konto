@@ -25,7 +25,7 @@ namespace konto
         private DbDataContext userDB;
         
         private ObservableCollection<User> _userDetail;
-        private ObservableCollection<Cookie> _cookieDetail;
+        private ObservableCollection<Cookies> _cookieDetail;
 
         public ObservableCollection<User> users
         {
@@ -43,7 +43,7 @@ namespace konto
             }
         }
 
-        public ObservableCollection<Cookie> cookies
+        public ObservableCollection<Cookies> cookies
         {
             get
             {
@@ -121,13 +121,13 @@ namespace konto
         }
 
         public void addCookieInDb(List<Login.cookieFromLoginUrl> result){
-            var cookieInDB = from Cookie _cookie_ in userDB.cookies select _cookie_;
-            System.Diagnostics.Debug.WriteLine(cookieInDB);
+            var cookieInDB = from Cookies _cookie_ in userDB.cookies select _cookie_;
+            //System.Diagnostics.Debug.WriteLine(cookieInDB);
 
             try
             {
-                cookies = new ObservableCollection<Cookie>(cookieInDB);
-                System.Diagnostics.Debug.WriteLine(cookies);
+                cookies = new ObservableCollection<Cookies>(cookieInDB);
+                //System.Diagnostics.Debug.WriteLine(cookies);
             }
             catch (Exception e)
             {
@@ -135,13 +135,13 @@ namespace konto
             }
             
 
-            var dbData = cookies.ToList();
+            //var dbData = cookies.ToList();
 
-            string _t = JsonConvert.SerializeObject(dbData);
-            System.Diagnostics.Debug.WriteLine(_t);
+            //string _t = JsonConvert.SerializeObject(dbData);
+            //System.Diagnostics.Debug.WriteLine(_t);
 
             
-            Cookie newCookie = new Cookie {
+            Cookies newCookie = new Cookies {
                 tea = result[0].Value,
                 user = result[1].Value
             };

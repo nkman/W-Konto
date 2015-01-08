@@ -16,7 +16,7 @@ namespace konto
     }
 
     [Table]
-    public class Cookie : INotifyPropertyChanged, INotifyPropertyChanging
+    public class Cookies : INotifyPropertyChanged, INotifyPropertyChanging
     {
         private int _cookieId;
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
@@ -283,9 +283,6 @@ namespace konto
         #endregion
     }
 
-
-
-
     [Table]
     public class User : INotifyPropertyChanged, INotifyPropertyChanging
     {
@@ -448,7 +445,6 @@ namespace konto
         #endregion
     }
 
-
     public class DbDataContext : DataContext
     {
         public static string DBConnectionString = "Data Source=isostore:/Konto.sdf";
@@ -460,6 +456,7 @@ namespace konto
 
 
         public Table<User> users;
-        public Table<Cookie> cookies;
+        public Table<Cookies> cookies;
+        public Table<Notification> notification;
     }
 }
