@@ -26,6 +26,7 @@ namespace konto
         
         private ObservableCollection<User> _userDetail;
         private ObservableCollection<Cookies> _cookieDetail;
+        private ObservableCollection<Notification> _notification;
 
         public ObservableCollection<User> users
         {
@@ -55,6 +56,22 @@ namespace konto
                 {
                     _cookieDetail = value;
                     NotifyPropertyChanged("CookieDetail");
+                }
+            }
+        }
+
+        public ObservableCollection<Notification> notification
+        {
+            get
+            {
+                return _notification;
+            }
+            set
+            {
+                if (_notification != value)
+                {
+                    _notification = value;
+                    NotifyPropertyChanged("Notification");
                 }
             }
         }
@@ -134,19 +151,10 @@ namespace konto
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
             
-
-            //var dbData = cookies.ToList();
-
-            //string _t = JsonConvert.SerializeObject(dbData);
-            //System.Diagnostics.Debug.WriteLine(_t);
-
-            
             Cookies newCookie = new Cookies {
                 tea = result[0].Value,
                 user = result[1].Value
             };
-
-            //System.Diagnostics.Debug.WriteLine(result.username);
 
             try
             {
@@ -209,5 +217,39 @@ namespace konto
             else
                 Dispatcher.BeginInvoke(action);
         }
+    }
+
+
+
+    /*
+     * Notification classes
+     * */
+
+    public class Negetive
+    {
+        public List<List<object>> negetive { get; set; }
+        public int status { get; set; }
+        public List<string> name { get; set; }
+    }
+
+    public class Track
+    {
+        public int status { get; set; }
+        public List<List<string>> unread { get; set; }
+    }
+
+    public class Positive
+    {
+        public List<List<object>> positive { get; set; }
+        public List<string> name { get; set; }
+        public int status { get; set; }
+    }
+
+    public class RootObject
+    {
+        public Negetive negetive { get; set; }
+        public int status { get; set; }
+        public Track track { get; set; }
+        public Positive positive { get; set; }
     }
 }

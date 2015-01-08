@@ -145,7 +145,9 @@ namespace konto
                 switch (variableUrlLocal)
                 {
                     case 0:
-                        result = JsonConvert.DeserializeObject<noticeGet>(responseString);
+                        result = JsonConvert.DeserializeObject<RootObject>(responseString);
+                        System.Diagnostics.Debug.WriteLine(((RootObject)result).negetive.negetive[0][0]);
+                        
                         break;
                     case 1:
                         result = JsonConvert.DeserializeObject<noticeRead>(responseString);
@@ -160,10 +162,11 @@ namespace konto
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
                         break;
                     default:
-                        result = JsonConvert.DeserializeObject<noticeGet>(responseString);
+                        result = JsonConvert.DeserializeObject<RootObject>(responseString);
                         break;
                 }
 
+                //System.Diagnostics.Debug.WriteLine(result.ToString());
             }
             catch (Exception e)
             {
