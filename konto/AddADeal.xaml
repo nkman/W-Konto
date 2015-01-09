@@ -1,0 +1,62 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="konto.AddADeal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="Finance Manager" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
+            <TextBlock Text="Konto" 
+                       Margin="0,0,0,0" 
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <Canvas Background="Transparent">
+            <StackPanel Canvas.Left="40" 
+                       Canvas.Top="200" 
+                       Width="400" 
+                       Height="428" >
+                <TextBlock>Username</TextBlock>
+                <TextBox x:Name="fellow_username"></TextBox>
+                <TextBlock>Amount</TextBlock>
+                <TextBox x:Name="amount"></TextBox>
+                <TextBlock>Username</TextBlock>
+                <toolkit:ListPicker x:Name="mod">
+                    <toolkit:ListPickerItem Content="He'll give me"/>
+                    <toolkit:ListPickerItem Content="I'll give him"/>
+                </toolkit:ListPicker>
+            </StackPanel>
+
+            <StackPanel Canvas.Left="30" 
+                       Canvas.Top="600" 
+                       Width="400" 
+                       Height="100"
+                       Margin="10,-50,0,0" >
+                <Button MinHeight="20" Content="Add"/>
+            </StackPanel>
+            
+            
+        </Canvas>
+
+        <toolkit:ListPicker></toolkit:ListPicker>
+    </Grid>
+
+</phone:PhoneApplicationPage>

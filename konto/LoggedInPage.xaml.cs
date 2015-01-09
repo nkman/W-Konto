@@ -278,7 +278,7 @@ namespace konto
 
         private void AddADeal(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AddADeal.xaml", UriKind.Relative));
         }
 
         private void LogoutUser(object sender, EventArgs e)
