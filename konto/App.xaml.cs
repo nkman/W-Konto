@@ -63,6 +63,7 @@ namespace konto
                 }
             }
 
+            
         }
 
         // Code to execute when a contract activation such as a file open or save picker returns 

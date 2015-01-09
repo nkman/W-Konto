@@ -130,6 +130,24 @@ namespace konto
             return _n;
         }
 
+        public List<Cookies> getAllCookieFromDB()
+        {
+            var cookieInDB = from Cookies _cookie_ in userDB.cookies select _cookie_;
+            List<Cookies> L;
+
+            try
+            {
+                cookies = new ObservableCollection<Cookies>(cookieInDB);
+                L = new List<Cookies>(cookies);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                L = new List<Cookies>();
+            }
+
+            return L;
+        }
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             //Removes Back stack entries.
@@ -274,6 +292,22 @@ namespace konto
             UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
             UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
         }
+
+        public void changeURIToMain()
+        {
+
+        }
+
+        public int CookieCount()
+        {
+            int c;
+            //UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            //UIThread.Invoke(() => c = _loggedInPage.getAllCookieFromDB().Count);
+            _loggedInPage = new LoggedInPage();
+            c = _loggedInPage.getAllCookieFromDB().Count;
+            //UIThread.Invoke(() => return c);
+            return c;
+        }
     }
 
 
@@ -328,4 +362,6 @@ namespace konto
         public Track track { get; set; }
         public Positive positive { get; set; }
     }
+
+    
 }

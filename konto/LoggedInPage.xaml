@@ -57,6 +57,7 @@
 
             <!--Panorama item two-->
             <phone:PanoramaItem Header="Notification" Width="452">
+                
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
                 <phone:LongListSelector Margin="0,-38,-22,2" x:Name="notificationDataBinding" ItemsSource="{Binding Notices}">
                     <phone:LongListSelector.ListHeaderTemplate>
@@ -83,6 +84,7 @@
                     </phone:LongListSelector.ItemTemplate>
                     
                 </phone:LongListSelector>
+                
             </phone:PanoramaItem>
 
             <!--Panorama item three-->
