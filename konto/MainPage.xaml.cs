@@ -21,10 +21,17 @@ namespace konto
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            loggedInPageHelper _CookieCount = new loggedInPageHelper();
-            if (_CookieCount.CookieCount() > 0)
+            try
             {
-                NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.RelativeOrAbsolute));
+                loggedInPageHelper _CookieCount = new loggedInPageHelper();
+                if (_CookieCount.CookieCount() > 0)
+                {
+                    NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.RelativeOrAbsolute));
+                }
+            }
+            catch (Exception exx)
+            {
+                System.Diagnostics.Debug.WriteLine(exx.ToString());
             }
         }
 

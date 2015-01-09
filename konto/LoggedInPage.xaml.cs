@@ -79,14 +79,22 @@ namespace konto
 
         public LoggedInPage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+                userDB = new DbDataContext(DbDataContext.DBConnectionString);
+                Notices = getAllNotices();
+                System.Diagnostics.Debug.WriteLine(Notices.ToString());
+                this.DataContext = this;
 
-            userDB = new DbDataContext(DbDataContext.DBConnectionString);
-            Notices = getAllNotices();
-            System.Diagnostics.Debug.WriteLine(Notices.ToString());
-            this.DataContext = this;
+                notificationDataBinding.ItemsSource = Notices;
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
 
-            notificationDataBinding.ItemsSource = Notices;
+            
         }
 
         public List<List<Notification>> getAllNotices()
@@ -148,6 +156,27 @@ namespace konto
 
             return L;
         }
+
+        public void LogoutUserDelDB()
+        {
+            foreach (Cookies c in getAllCookieFromDB())
+            {
+                cookies.Remove(c);
+                userDB.cookies.DeleteOnSubmit(c);
+                userDB.SubmitChanges();
+            }
+
+            List<List<Notification>> n = getAllNotices();
+            foreach (List<Notification> _n in n)
+            {
+                foreach(Notification __n in _n){
+                    notification.Remove(__n);
+                    userDB.notification.DeleteOnSubmit(__n);
+                    userDB.SubmitChanges();
+                }
+            }
+        }
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             //Removes Back stack entries.
@@ -283,6 +312,7 @@ namespace konto
 
         private void LogoutUser(object sender, EventArgs e)
         {
+            LogoutUserDelDB();
             NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
     }
