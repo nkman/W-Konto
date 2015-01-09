@@ -271,9 +271,19 @@ namespace konto
         }
         #endregion
 
-        private void Panorama_Loaded(object sender, RoutedEventArgs e)
+        private void ShowCredits(object sender, EventArgs e)
         {
+            NavigationService.Navigate(new Uri("/Credits.xaml", UriKind.Relative));
+        }
 
+        private void AddADeal(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
+        }
+
+        private void LogoutUser(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
     }
 

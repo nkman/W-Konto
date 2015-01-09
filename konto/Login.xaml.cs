@@ -170,5 +170,7 @@ namespace konto
         {
             base.OnNavigatedTo(e);
         }
+
+        
     }
 }
