@@ -105,8 +105,13 @@ namespace konto
             HttpWebRequest spAuthReq = HttpWebRequest.Create(AuthServiceUri) as HttpWebRequest;
             spAuthReq.CookieContainer = new CookieContainer();
             addCookieInReq();
-            spAuthReq.CookieContainer.Add(new Uri(config.homeUrl()), new Cookie("tea", cake.tea));
-            spAuthReq.CookieContainer.Add(new Uri(config.homeUrl()), new Cookie("user", cake.user));
+
+            if (cake.tea != null && cake.user != null)
+            {
+                spAuthReq.CookieContainer.Add(new Uri(config.homeUrl()), new Cookie("tea", cake.tea));
+                spAuthReq.CookieContainer.Add(new Uri(config.homeUrl()), new Cookie("user", cake.user));
+            }
+            
 
             spAuthReq.ContentType = "application/json";
             spAuthReq.Method = "POST";
@@ -183,17 +188,15 @@ namespace konto
             try
             {
                 cookies = new ObservableCollection<Cookies>(cookieInDB);
+                var dbData = cookies.ToList();
+                cake.tea = dbData[0].tea;
+                cake.user = dbData[0].user;
                 //System.Diagnostics.Debug.WriteLine(cookies);
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
-
-
-            var dbData = cookies.ToList();
-            cake.tea = dbData[0].tea;
-            cake.user = dbData[0].user;
 
         }
 

@@ -335,8 +335,8 @@ namespace konto
 
         public async Task notificationPopulator(Notification result)
         {
-            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
-            UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
+            await UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            await UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
         }
 
         public void changeURIToMain()
@@ -366,7 +366,7 @@ namespace konto
             Dispatcher = Deployment.Current.Dispatcher;
         }
 
-        public static void Invoke(Action action)
+        public static async Task Invoke(Action action)
         {
             if (Dispatcher.CheckAccess())
                 action.Invoke();
