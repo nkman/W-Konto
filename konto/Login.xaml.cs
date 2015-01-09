@@ -16,6 +16,7 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace konto
 {
@@ -113,7 +114,7 @@ namespace konto
             myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
         }
 
-        void GetResponsetStreamCallback(IAsyncResult callbackResult)
+        public async void GetResponsetStreamCallback(IAsyncResult callbackResult)
         {
             try
             {
@@ -150,7 +151,7 @@ namespace konto
                         }
                     };
 
-                    httpHelper.RequestSender(p[0], 0);
+                    await httpHelper.RequestSender(p[0], 0);
                     Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative))));
                 }
                 else

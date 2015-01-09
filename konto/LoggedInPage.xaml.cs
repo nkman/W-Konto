@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace konto
 {
@@ -88,6 +89,7 @@ namespace konto
                 this.DataContext = this;
 
                 notificationDataBinding.ItemsSource = Notices;
+               
             }
             catch(Exception e)
             {
@@ -190,6 +192,10 @@ namespace konto
         {
             base.OnNavigatedFrom(e);
             userDB.SubmitChanges();
+            while (NavigationService.CanGoBack)
+            {
+                NavigationService.RemoveBackEntry();
+            }
         }
 
 
@@ -327,7 +333,7 @@ namespace konto
             UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
         }
 
-        public void notificationPopulator(Notification result)
+        public async Task notificationPopulator(Notification result)
         {
             UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
             UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));

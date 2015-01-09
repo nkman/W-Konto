@@ -68,7 +68,7 @@ namespace konto
         }
 
         
-        internal static void RequestSender(dynamic variableData, int variableUrl)
+        internal static async Task RequestSender(dynamic variableData, int variableUrl)
         {
             var config = new urlConfig();
             string AuthServiceUri;
@@ -126,7 +126,7 @@ namespace konto
             myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
         }
 
-        static void GetResponsetStreamCallback(IAsyncResult callbackResult)
+        public static async void GetResponsetStreamCallback(IAsyncResult callbackResult)
         {
             dynamic result;
             try
@@ -147,7 +147,7 @@ namespace konto
                     case 0:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
                         RootObject R = (RootObject)result;
-                        iterateSavingNotification(R);
+                        await iterateSavingNotification(R);
                         break;
                     case 1:
                         result = JsonConvert.DeserializeObject<noticeRead>(responseString);
@@ -203,7 +203,7 @@ namespace konto
             public string user { set; get; }
         }
 
-        public static void iterateSavingNotification(RootObject _result)
+        public static async Task iterateSavingNotification(RootObject _result)
         {
             
             Negetive _negetive = _result.negetive;
@@ -220,7 +220,7 @@ namespace konto
                     IsTracking = false,
                     Name = _negetive.name[i]
                 };
-                _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                await _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
 
@@ -236,7 +236,7 @@ namespace konto
                     IsTracking = false,
                     Name = _positive.name[i]
                 };
-                _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                await _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
 
@@ -251,7 +251,7 @@ namespace konto
                     IsTracking = true,
                     Name = (string)_track.unread[i][2]
                 };
-                _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                await _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
         }
