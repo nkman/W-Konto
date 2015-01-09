@@ -29,7 +29,7 @@ namespace konto
         }
         public void Local(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Signup.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative));
         }
     }
 }

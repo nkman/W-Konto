@@ -27,6 +27,7 @@ namespace konto
         private ObservableCollection<User> _userDetail;
         private ObservableCollection<Cookies> _cookieDetail;
         private ObservableCollection<Notification> _notification;
+        public static List<List<Notification>> Notices;
 
         public ObservableCollection<User> users
         {
@@ -81,14 +82,56 @@ namespace konto
             InitializeComponent();
 
             userDB = new DbDataContext(DbDataContext.DBConnectionString);
+            Notices = getAllNotices();
+            System.Diagnostics.Debug.WriteLine(Notices.ToString());
             this.DataContext = this;
+
+            notificationDataBinding.ItemsSource = Notices;
+        }
+
+        public List<List<Notification>> getAllNotices()
+        {
+            var noticeInDb = from Notification _notice_ in userDB.notification select _notice_;
+            //System.Diagnostics.Debug.WriteLine(cookieInDB);
+
+            try
+            {
+                notification = new ObservableCollection<Notification>(noticeInDb);
+                //System.Diagnostics.Debug.WriteLine(cookies);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+            List<Notification> positive_n = new List<Notification>();
+            List<Notification> negetive_n = new List<Notification>();
+            List<Notification> tracking_n = new List<Notification>();
+
+            foreach (Notification n in notification)
+            {
+                if (n.IsPositive)
+                {
+                    positive_n.Add(n);
+                }
+                else if (n.IsNegetive)
+                {
+                    negetive_n.Add(n);
+                }
+                else
+                {
+                    tracking_n.Add(n);
+                }
+            }
+            List<List<Notification>> _n = new List<List<Notification>>();
+            _n.Add(positive_n);
+            _n.Add(negetive_n);
+            _n.Add(tracking_n);
+
+            return _n;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            //var userInDB = from User _user_ in userDB.users select _user_;
-            //users = new ObservableCollection<User>(userInDB);
-            //base.OnNavigatedTo(e);
             //Removes Back stack entries.
             while (NavigationService.CanGoBack)
             {

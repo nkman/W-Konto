@@ -36,15 +36,15 @@
          -->
 
         <!--Panorama control-->
-        <phone:Panorama FontSize="100" Title="KONTO" Loaded="Panorama_Loaded">
+        <phone:Panorama>
             <phone:Panorama.Background>
                 <ImageBrush ImageSource="/panoramaTest;component/Assets/PanoramaBackground.png"/>
             </phone:Panorama.Background>
 
             <!--Panorama item one-->
-            <phone:PanoramaItem Header="positive">
+            <phone:PanoramaItem Header="Deals">
                 <!--Single line list with text wrapping-->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Items}">
+                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Items}" Height="604">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,-6,0,12">
@@ -56,9 +56,9 @@
             </phone:PanoramaItem>
 
             <!--Panorama item two-->
-            <phone:PanoramaItem Header="Negetive">
+            <phone:PanoramaItem Header="Notification" Width="452">
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-38,-22,2" ItemsSource="{Binding Items}">
+                <phone:LongListSelector Margin="0,-38,-22,2" x:Name="notificationDataBinding" ItemsSource="{Binding Notices}">
                     <phone:LongListSelector.ListHeaderTemplate>
                         <DataTemplate>
                             <Grid Margin="12,0,0,38">
@@ -66,24 +66,22 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="second item"
-                                           Style="{StaticResource PanoramaItemHeaderTextStyle}"
-                                           Grid.Row="0"/>
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ListHeaderTemplate>
+                    
                     <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:Name="positive">
+                            
                             <StackPanel Orientation="Horizontal" Margin="12,2,0,4" Height="105" Width="432">
-                                <!--Replace rectangle with image-->
-                                <Border BorderThickness="1" Width="99" Height="99" BorderBrush="#FFFFC700" Background="#FFFFC700"/>
                                 <StackPanel Width="311" Margin="8,-7,0,0">
-                                    <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Text="{Binding LineTwo}" TextWrapping="Wrap" Margin="10,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Text="{Binding Notice_id}" TextWrapping="Wrap" Margin="10,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
+                    
                 </phone:LongListSelector>
             </phone:PanoramaItem>
 
