@@ -159,7 +159,7 @@ namespace konto
         }
 
         private string _notice_id;
-        [Column]
+        [Column(CanBeNull = false)]
         public string Notice_id
         {
             get

@@ -85,7 +85,7 @@ namespace konto
                 InitializeComponent();
                 userDB = new DbDataContext(DbDataContext.DBConnectionString);
                 Notices = getAllNotices();
-                System.Diagnostics.Debug.WriteLine(Notices.ToString());
+                //System.Diagnostics.Debug.WriteLine(Notices.ToString());
                 this.DataContext = this;
 
                 notificationDataBinding.ItemsSource = Notices;
@@ -268,17 +268,29 @@ namespace konto
         {
             var noticeInDb = from Notification _notice_ in userDB.notification select _notice_;
             //System.Diagnostics.Debug.WriteLine(cookieInDB);
-
+            int breakit = 0;
             try
             {
                 notification = new ObservableCollection<Notification>(noticeInDb);
-                //System.Diagnostics.Debug.WriteLine(cookies);
+                System.Diagnostics.Debug.WriteLine(notification.Count);
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
 
+            foreach (Notification n in notification)
+            {
+                if (n.Notice_id == result.Notice_id)
+                {
+                    System.Diagnostics.Debug.WriteLine("Already in Database");
+                    breakit = 1;
+                    break;
+                }
+                    
+            }
+
+            if(breakit == 0)
             try
             {
                 notification.Add(result);
@@ -321,16 +333,38 @@ namespace konto
             LogoutUserDelDB();
             NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
+
+        private async void SyncNotice(object sender, EventArgs e)
+        {
+            var p = new List<httpHelper.noticeGet>
+            {
+                new httpHelper.noticeGet {
+                    unread = 1
+                }
+            };
+            await httpHelper.RequestSender(p[0], 0);
+            try
+            {
+                Notices = getAllNotices();
+                notificationDataBinding.ItemsSource = Notices;
+                NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
+            }
+            catch (Exception er)
+            {
+                System.Diagnostics.Debug.WriteLine(er.ToString());
+            }
+            
+        }
     }
 
     public class loggedInPageHelper
     {
         public LoggedInPage _loggedInPage;
-        public void helperFunc(Login.dataFromLoginUrl result, List<Login.cookieFromLoginUrl> _cookie)
+        public async void helperFunc(Login.dataFromLoginUrl result, List<Login.cookieFromLoginUrl> _cookie)
         {
-            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
-            UIThread.Invoke(() => _loggedInPage.adduserInDb(result));
-            UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
+            await UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            await UIThread.Invoke(() => _loggedInPage.adduserInDb(result));
+            await UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
         }
 
         public async Task notificationPopulator(Notification result)
