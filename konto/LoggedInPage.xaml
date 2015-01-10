@@ -80,8 +80,8 @@
                                     <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
                                     <TextBlock Text="{Binding Notice_id}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
 
-                                    <Button x:Name="butt1" Margin="240,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1">1</Button>
-                                    <Button x:Name="butt2" Margin="340,-80,10,0" Width="80" Height="80">0</Button>
+                                    <Button x:Name="butt1" Margin="240,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1_click">1</Button>
+                                    <Button x:Name="butt2" Margin="340,-80,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt2_click">0</Button>
                                     
                                 </StackPanel>
                             </StackPanel>

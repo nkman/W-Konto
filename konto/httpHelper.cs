@@ -46,7 +46,7 @@ namespace konto
 
         public class noticeRead
         {
-            string notice_id { get; set; }
+            public string notice_id { get; set; }
         }
 
         public class transactionAdd
@@ -63,12 +63,17 @@ namespace konto
 
         public class noticeAcceptDeclineDelete
         {
-            string account_id { get; set; }
-            string decision { get; set; }
+            public string account_id { get; set; }
+            public string decision { get; set; }
         }
 
-        
-        internal static async Task RequestSender(dynamic variableData, int variableUrl)
+        public class noticeAcceptDeclineDeleteResponse
+        {
+            public int status { set; get; }
+            public string message { set; get; }
+        }
+
+        internal static async Task<int> RequestSender(dynamic variableData, int variableUrl)
         {
             var config = new urlConfig();
             string AuthServiceUri;
@@ -117,6 +122,7 @@ namespace konto
             spAuthReq.Method = "POST";
             spAuthReq.Headers["Authorization"] = config.apiKey();
             spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
+            return 1;
         }
 
         static void GetRequestStreamCallback(IAsyncResult callbackResult)
@@ -131,7 +137,7 @@ namespace konto
             myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
         }
 
-        public static async void GetResponsetStreamCallback(IAsyncResult callbackResult)
+        public static void GetResponsetStreamCallback(IAsyncResult callbackResult)
         {
             dynamic result;
             try
@@ -152,25 +158,33 @@ namespace konto
                     case 0:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
                         RootObject R = (RootObject)result;
-                        await iterateSavingNotification(R);
+                        iterateSavingNotification(R);
                         break;
                     case 1:
                         result = JsonConvert.DeserializeObject<noticeRead>(responseString);
                         break;
                     case 2:
-                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
                         break;
                     case 3:
-                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
                         break;
                     case 4:
-                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(responseString);
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
                         break;
                     default:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
                         break;
                 }
 
+                if (result.status == 1)
+                {
+                    System.Diagnostics.Debug.WriteLine("Done");
+                }
+                else  if (result.status == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine(result.message);
+                }
                 //System.Diagnostics.Debug.WriteLine(result.ToString());
             }
             catch (Exception e)
@@ -206,7 +220,7 @@ namespace konto
             public string user { set; get; }
         }
 
-        public static async Task iterateSavingNotification(RootObject _result)
+        public static void iterateSavingNotification(RootObject _result)
         {
             
             Negetive _negetive = _result.negetive;
@@ -223,7 +237,7 @@ namespace konto
                     IsTracking = false,
                     Name = _negetive.name[i]
                 };
-                await _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
 
@@ -239,7 +253,7 @@ namespace konto
                     IsTracking = false,
                     Name = _positive.name[i]
                 };
-                await _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
 
@@ -254,7 +268,7 @@ namespace konto
                     IsTracking = true,
                     Name = (string)_track.unread[i][2]
                 };
-                await _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
         }

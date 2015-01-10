@@ -28,7 +28,6 @@ namespace konto
         private ObservableCollection<User> _userDetail;
         private ObservableCollection<Cookies> _cookieDetail;
         private ObservableCollection<Notification> _notification;
-        public static List<List<Notification>> Notices;
 
         public ObservableCollection<User> users
         {
@@ -84,12 +83,8 @@ namespace konto
             {
                 InitializeComponent();
                 userDB = new DbDataContext(DbDataContext.DBConnectionString);
-                Notices = getAllNotices();
-                //System.Diagnostics.Debug.WriteLine(Notices.ToString());
+                getAllNotices();
                 this.DataContext = this;
-
-                //notificationDataBinding.ItemsSource = Notices;
-               
             }
             catch(Exception e)
             {
@@ -334,10 +329,30 @@ namespace konto
             NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
 
-        private void butt1(object sender, EventArgs e)
+        private async void butt1_click(object sender, EventArgs e)
         {
-            var myValue = ((Button)sender).Tag;
-            System.Diagnostics.Debug.WriteLine(myValue);
+            var button = sender as Button;
+            var myValue = button.Tag;
+            httpHelper.noticeAcceptDeclineDelete n = new httpHelper.noticeAcceptDeclineDelete
+            {
+                account_id = (string)myValue,
+                decision = "Accept"
+            };
+            int x = await httpHelper.RequestSender(n, 2);
+            System.Diagnostics.Debug.WriteLine(n);
+        }
+
+        private async void butt2_click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var myValue = button.Tag;
+            httpHelper.noticeAcceptDeclineDelete n = new httpHelper.noticeAcceptDeclineDelete
+            {
+                account_id = (string)myValue,
+                decision = "Decline"
+            };
+            int x = await httpHelper.RequestSender(n, 3);
+            System.Diagnostics.Debug.WriteLine(n);
         }
 
         private async void SyncNotice(object sender, EventArgs e)
@@ -348,11 +363,14 @@ namespace konto
                     unread = 1
                 }
             };
-            await httpHelper.RequestSender(p[0], 0);
+
+            Task<int> _p;
             try
             {
-                Notices = getAllNotices();
-                notificationDataBinding.ItemsSource = Notices;
+                _p = httpHelper.RequestSender(p[0], 0);
+                await _p;
+
+                getAllNotices();
                 NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
             }
             catch (Exception er)
@@ -366,17 +384,17 @@ namespace konto
     public class loggedInPageHelper
     {
         public LoggedInPage _loggedInPage;
-        public async void helperFunc(Login.dataFromLoginUrl result, List<Login.cookieFromLoginUrl> _cookie)
+        public void helperFunc(Login.dataFromLoginUrl result, List<Login.cookieFromLoginUrl> _cookie)
         {
-            await UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
-            await UIThread.Invoke(() => _loggedInPage.adduserInDb(result));
-            await UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.adduserInDb(result));
+            UIThread.Invoke(() => _loggedInPage.addCookieInDb(_cookie));
         }
 
-        public async Task notificationPopulator(Notification result)
+        public void notificationPopulator(Notification result)
         {
-            await UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
-            await UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
         }
 
         public void changeURIToMain()
@@ -406,7 +424,7 @@ namespace konto
             Dispatcher = Deployment.Current.Dispatcher;
         }
 
-        public static async Task Invoke(Action action)
+        public static void Invoke(Action action)
         {
             if (Dispatcher.CheckAccess())
                 action.Invoke();
