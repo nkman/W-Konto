@@ -88,7 +88,7 @@ namespace konto
                 //System.Diagnostics.Debug.WriteLine(Notices.ToString());
                 this.DataContext = this;
 
-                notificationDataBinding.ItemsSource = Notices;
+                //notificationDataBinding.ItemsSource = Notices;
                
             }
             catch(Exception e)
@@ -332,6 +332,12 @@ namespace konto
         {
             LogoutUserDelDB();
             NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
+        }
+
+        private void butt1(object sender, EventArgs e)
+        {
+            var myValue = ((Button)sender).Tag;
+            System.Diagnostics.Debug.WriteLine(myValue);
         }
 
         private async void SyncNotice(object sender, EventArgs e)

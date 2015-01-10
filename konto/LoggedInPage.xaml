@@ -60,7 +60,7 @@
             <phone:PanoramaItem Header="Notification" Width="452">
                 
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-38,-22,2" x:Name="notificationDataBinding" ItemsSource="{Binding Notices}">
+                <phone:LongListSelector Margin="0,-38,-22,2" x:Name="notificationDataBinding" ItemsSource="{Binding notification}">
                     <phone:LongListSelector.ListHeaderTemplate>
                         <DataTemplate>
                             <Grid Margin="12,0,0,38">
@@ -75,16 +75,14 @@
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate x:Name="positive">
                             
-                            <StackPanel Orientation="Horizontal" Margin="12,2,0,4" Height="105" Width="432">
-                                <StackPanel Width="311" Margin="8,-7,0,0">
-                                    <TextBlock Text="{Binding [0]Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Text="{Binding [0]Notice_id}" TextWrapping="Wrap" Margin="10,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                            <StackPanel Orientation="Horizontal" Margin="5,10,0,5" Height="105" Width="432">
+                                <StackPanel Width="420" Margin="-10,-7,0,0">
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Text="{Binding Notice_id}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
 
-                                    <TextBlock Text="{Binding [1]Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Text="{Binding [1]Notice_id}" TextWrapping="Wrap" Margin="10,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-
-                                    <TextBlock Text="{Binding [2]Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Text="{Binding [2]Notice_id}" TextWrapping="Wrap" Margin="10,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                    <Button x:Name="butt1" Margin="240,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1">1</Button>
+                                    <Button x:Name="butt2" Margin="340,-80,10,0" Width="80" Height="80">0</Button>
+                                    
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
