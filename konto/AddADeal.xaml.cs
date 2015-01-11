@@ -16,5 +16,33 @@ namespace konto
         {
             InitializeComponent();
         }
+
+        public void AddATransaction_Button_click(object sender, EventArgs e)
+        {
+            string _fellow_username = fellow_username.Text;
+            string _amount = amount.Text;
+            var _mod = (string)((ListPickerItem)mod.SelectedItem).Content;
+            httpHelper.transactionAdd _t;
+            if (_mod == "He'll give me")
+            {
+                _t = new httpHelper.transactionAdd
+                {
+                    fellow_username = _fellow_username,
+                    amount = Int32.Parse(_amount),
+                    sign = "positive"
+                };
+            }
+            else
+            {
+                _t = new httpHelper.transactionAdd
+                {
+                    fellow_username = _fellow_username,
+                    amount = Int32.Parse(_amount),
+                    sign = "negetive"
+                };
+            }
+            System.Diagnostics.Debug.WriteLine(_t);
+            httpHelper.RequestSender(_t, 5);
+        }
     }
 }

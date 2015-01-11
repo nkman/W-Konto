@@ -50,11 +50,9 @@
                        Width="400" 
                        Height="100"
                        Margin="10,-50,0,0" >
-                <Button MinHeight="20" Content="Add"/>
+                <Button MinHeight="20" Content="Add" Click="AddATransaction_Button_click"/>
             </StackPanel>
         </Canvas>
-
-        <toolkit:ListPicker></toolkit:ListPicker>
     </Grid>
 
 </phone:PhoneApplicationPage>

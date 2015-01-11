@@ -51,9 +51,9 @@ namespace konto
 
         public class transactionAdd
         {
-            string fellow_username { get; set; }
-            int amount { get; set; }
-            string decision { get; set; }
+            public string fellow_username { get; set; }
+            public int amount { get; set; }
+            public string sign { get; set; }
         }
 
         public class noticeGet
@@ -100,6 +100,10 @@ namespace konto
                 case 4:
                     AuthServiceUri = config.notificationDeleteUrl();
                     json = JsonConvert.SerializeObject((noticeAcceptDeclineDelete)variableData);
+                    break;
+                case 5:
+                    AuthServiceUri = config.addUrl();
+                    json = JsonConvert.SerializeObject((transactionAdd)variableData);
                     break;
                 default:
                     AuthServiceUri = config.notificationUrl();
@@ -172,6 +176,9 @@ namespace konto
                     case 4:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
                         break;
+                    case 5:
+                        result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
+                        break;
                     default:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
                         break;
@@ -235,7 +242,7 @@ namespace konto
                     IsPositive = false,
                     IsNegetive = true,
                     IsTracking = false,
-                    Name = _negetive.name[i]
+                    Name = "You owe "+_negetive.name[i]
                 };
                 _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
@@ -251,7 +258,7 @@ namespace konto
                     IsPositive = true,
                     IsNegetive = false,
                     IsTracking = false,
-                    Name = _positive.name[i]
+                    Name = _positive.name[i]+" owes you"
                 };
                 _loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
@@ -268,7 +275,7 @@ namespace konto
                     IsTracking = true,
                     Name = (string)_track.unread[i][2]
                 };
-                _loggedInPageHelper.notificationPopulator(_notificationInDb);
+                //_loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
             }
         }

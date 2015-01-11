@@ -39,8 +39,9 @@ namespace konto
             {
                 if (_userDetail != value)
                 {
+                    NotifyPropertyChanging("users");
                     _userDetail = value;
-                    NotifyPropertyChanged("UserDetails");
+                    NotifyPropertyChanged("users");
                 }
             }
         }
@@ -55,8 +56,9 @@ namespace konto
             {
                 if (_cookieDetail != value)
                 {
+                    NotifyPropertyChanging("cookies");
                     _cookieDetail = value;
-                    NotifyPropertyChanged("CookieDetail");
+                    NotifyPropertyChanged("cookies");
                 }
             }
         }
@@ -71,8 +73,9 @@ namespace konto
             {
                 if (_notification != value)
                 {
+                    NotifyPropertyChanging("notification");
                     _notification = value;
-                    NotifyPropertyChanged("Notification");
+                    NotifyPropertyChanged("notification");
                 }
             }
         }
@@ -217,9 +220,11 @@ namespace konto
 
             try
             {
+                NotifyPropertyChanging("users");
                 users.Add(newUser);
                 userDB.users.InsertOnSubmit(newUser);
                 userDB.SubmitChanges();
+                NotifyPropertyChanged("users");
             }
             catch (Exception e)
             {
@@ -288,10 +293,12 @@ namespace konto
             if(breakit == 0)
             try
             {
+                NotifyPropertyChanging("notification");
                 notification.Add(result);
                 userDB.notification.InsertOnSubmit(result);
                 System.Diagnostics.Debug.WriteLine("Adding in Database");
                 userDB.SubmitChanges();
+                NotifyPropertyChanged("notification");
             }
             catch (Exception e)
             {
@@ -311,6 +318,21 @@ namespace konto
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+        #endregion
+
+        #region INotifyPropertyChanging Members
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        // Used to notify the data context that a data context property is about to change
+        private void NotifyPropertyChanging(string propertyName)
+        {
+            if (PropertyChanging != null)
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
         #endregion
 
         private void ShowCredits(object sender, EventArgs e)
