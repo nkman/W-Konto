@@ -28,6 +28,8 @@ namespace konto
         private ObservableCollection<User> _userDetail;
         private ObservableCollection<Cookies> _cookieDetail;
         private ObservableCollection<Notification> _notification;
+        private ObservableCollection<RealData> _realdata;
+        private ObservableCollection<RealDataLocal> _realdatalocal;
 
         public ObservableCollection<User> users
         {
@@ -59,6 +61,40 @@ namespace konto
                     NotifyPropertyChanging("cookies");
                     _cookieDetail = value;
                     NotifyPropertyChanged("cookies");
+                }
+            }
+        }
+
+        public ObservableCollection<RealData> realdata
+        {
+            get
+            {
+                return _realdata;
+            }
+            set
+            {
+                if (_realdata != value)
+                {
+                    NotifyPropertyChanging("realdata");
+                    _realdata = value;
+                    NotifyPropertyChanged("realdata");
+                }
+            }
+        }
+
+        public ObservableCollection<RealDataLocal> realdatalocal
+        {
+            get
+            {
+                return _realdatalocal;
+            }
+            set
+            {
+                if (_realdatalocal != value)
+                {
+                    NotifyPropertyChanging("realdatalocal");
+                    _realdatalocal = value;
+                    NotifyPropertyChanged("realdatalocal");
                 }
             }
         }
@@ -306,6 +342,49 @@ namespace konto
             }
         }
 
+        public void RealDataSaveInDb(RealData result)
+        {
+            var dataInDb = from RealData _realdata_ in userDB.realdata select _realdata_;
+            //System.Diagnostics.Debug.WriteLine(cookieInDB);
+            int breakit = 0;
+            try
+            {
+                realdata = new ObservableCollection<RealData>(dataInDb);
+                System.Diagnostics.Debug.WriteLine(realdata.Count);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+
+            foreach (RealData R in realdata)
+            {
+                if (R.Notice_id == result.Notice_id)
+                {
+                    breakit = 1;
+                    break;
+                }
+            }
+
+            if (breakit == 0)
+            {
+                try
+                {
+                    NotifyPropertyChanging("realdata");
+                    realdata.Add(result);
+                    userDB.realdata.InsertOnSubmit(result);
+                    System.Diagnostics.Debug.WriteLine("Adding in Database");
+                    userDB.SubmitChanges();
+                    NotifyPropertyChanged("realdata");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.ToString());
+                }
+            }
+
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -391,6 +470,8 @@ namespace konto
             {
                 _p = httpHelper.RequestSender(p[0], 0);
                 await _p;
+                _p = httpHelper.RequestSender(p[0], 6);
+                await _p;
 
                 getAllNotices();
                 NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
@@ -419,9 +500,10 @@ namespace konto
             UIThread.Invoke(() => _loggedInPage.NotificationSaveInDb(result));
         }
 
-        public void changeURIToMain()
+        public void realdatapopulator(RealData result)
         {
-
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.RealDataSaveInDb(result));
         }
 
         public int CookieCount()

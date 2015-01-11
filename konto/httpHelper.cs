@@ -165,8 +165,11 @@ namespace konto
                 {
                     case 0:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
-                        RootObject R = (RootObject)result;
-                        iterateSavingNotification(R);
+                        if (result.status == 1)
+                        {
+                            RootObject R = (RootObject)result;
+                            iterateSavingNotification(R);
+                        }
                         break;
                     case 1:
                         result = JsonConvert.DeserializeObject<noticeRead>(responseString);
@@ -185,7 +188,11 @@ namespace konto
                         break;
                     case 6:
                         result = JsonConvert.DeserializeObject<RealDataYo>(responseString);
-
+                        if (result.status == 1)
+                        {
+                            RealDataYo _R = (RealDataYo)result;
+                            iterateSavingRealData(_R);
+                        }
                         break;
                     default:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
@@ -285,6 +292,36 @@ namespace konto
                 };
                 //_loggedInPageHelper.notificationPopulator(_notificationInDb);
                 //NotificationSaveInDb(_notificationInDb);
+            }
+        }
+
+        public static void iterateSavingRealData(RealDataYo _result)
+        {
+            loggedInPageHelper _loggedInPageHelper = new loggedInPageHelper();
+            for (int i = 0; i < _result.negetive_name.Count; i++)
+            {
+                RealData __realdata = new RealData
+                {
+                    Name = "You owe " + (string)_result.negetive_name[i],
+                    Amount = Int32.Parse((string)_result.negetive[i][3]),
+                    Notice_id = (string)_result.negetive[i][0],
+                    IsNegetive = true,
+                    IsPositive = false
+                };
+                _loggedInPageHelper.realdatapopulator(__realdata);
+            }
+
+            for (int i = 0; i < _result.positive_name.Count; i++)
+            {
+                RealData __realdata = new RealData
+                {
+                    Name = (string)_result.positive_name[i] + " owes you",
+                    Amount = Int32.Parse((string)_result.positive[i][3]),
+                    Notice_id = (string)_result.positive[i][0],
+                    IsNegetive = true,
+                    IsPositive = false
+                };
+                _loggedInPageHelper.realdatapopulator(__realdata);
             }
         }
     }

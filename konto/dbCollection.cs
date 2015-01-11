@@ -605,7 +605,6 @@ namespace konto
         #endregion
     }
 
-
     [Table]
     public class RealDataLocal : INotifyPropertyChanging, INotifyPropertyChanged
     {
@@ -765,6 +764,7 @@ namespace konto
 
         #endregion
     }
+
     public class DbDataContext : DataContext
     {
         public static string DBConnectionString = "Data Source=isostore:/Konto.sdf";
@@ -778,5 +778,8 @@ namespace konto
         public Table<User> users;
         public Table<Cookies> cookies;
         public Table<Notification> notification;
+        public Table<RealData> realdata;
+        public Table<RealDataLocal> realdatalocal;
     }
+
 }
