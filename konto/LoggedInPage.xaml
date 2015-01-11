@@ -45,11 +45,30 @@
             <!--Panorama item one-->
             <phone:PanoramaItem Header="Deals">
                 <!--Single line list with text wrapping-->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Items}" Height="604">
-                    <phone:LongListSelector.ItemTemplate>
+                <phone:LongListSelector Margin="0,-38,-22,2" x:Name="realDataBinding" ItemsSource="{Binding realdata}">
+                    <phone:LongListSelector.ListHeaderTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,-6,0,12">
-                                <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeExtraLarge}"/>
+                            <Grid Margin="12,0,0,38">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ListHeaderTemplate>
+
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate x:Name="deal">
+
+                            <StackPanel Orientation="Horizontal" Margin="5,10,0,5" Height="105" Width="432">
+                                <StackPanel Width="420" Margin="-10,-7,0,0">
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Text="{Binding Amount}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
+
+                                    <Button x:Name="butt1" Margin="240,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1_click">1</Button>
+                                    <Button x:Name="butt2" Margin="340,-80,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt2_click">0</Button>
+
+                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
@@ -93,25 +112,7 @@
             </phone:PanoramaItem>
 
             <!--Panorama item three-->
-            <phone:PanoramaItem Header="third item" Orientation="Horizontal">
-                <!--Double wide Panorama with large image placeholders-->
-                <Grid>
-                    <StackPanel Margin="0,4,16,0" Orientation="Vertical" VerticalAlignment="Top">
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,12,0,0">
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                            <Border Background="#FFFFC700" Height="173" Width="173" Margin="12,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </phone:PanoramaItem>
+            
         </phone:Panorama>
 
         <!--Uncomment to see an alignment grid to help ensure your controls are

@@ -17,6 +17,7 @@ using System.Windows.Threading;
 
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace konto
 {
@@ -123,6 +124,7 @@ namespace konto
                 InitializeComponent();
                 userDB = new DbDataContext(DbDataContext.DBConnectionString);
                 getAllNotices();
+                getAllData();
                 this.DataContext = this;
             }
             catch(Exception e)
@@ -172,6 +174,12 @@ namespace konto
             _n.Add(tracking_n);
 
             return _n;
+        }
+
+        public void getAllData()
+        {
+            var dataInDb = from RealData _realdata_ in userDB.realdata select _realdata_;
+            realdata = new ObservableCollection<RealData>(dataInDb);
         }
 
         public List<Cookies> getAllCookieFromDB()
@@ -430,7 +438,7 @@ namespace konto
             NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
 
-        private async void butt1_click(object sender, EventArgs e)
+        private void butt1_click(object sender, EventArgs e)
         {
             var button = sender as Button;
             var myValue = button.Tag;
@@ -439,11 +447,11 @@ namespace konto
                 account_id = (string)myValue,
                 decision = "Accept"
             };
-            int x = await httpHelper.RequestSender(n, 2);
+            httpHelper.RequestSender(n, 2);
             System.Diagnostics.Debug.WriteLine(n);
         }
 
-        private async void butt2_click(object sender, EventArgs e)
+        private void butt2_click(object sender, EventArgs e)
         {
             var button = sender as Button;
             var myValue = button.Tag;
@@ -452,11 +460,11 @@ namespace konto
                 account_id = (string)myValue,
                 decision = "Decline"
             };
-            int x = await httpHelper.RequestSender(n, 3);
+            httpHelper.RequestSender(n, 3);
             System.Diagnostics.Debug.WriteLine(n);
         }
 
-        private async void SyncNotice(object sender, EventArgs e)
+        private void SyncNotice(object sender, EventArgs e)
         {
             var p = new List<httpHelper.noticeGet>
             {
@@ -465,15 +473,14 @@ namespace konto
                 }
             };
 
-            Task<int> _p;
             try
             {
-                _p = httpHelper.RequestSender(p[0], 0);
-                await _p;
-                _p = httpHelper.RequestSender(p[0], 6);
-                await _p;
+                //System.IAsyncResult _A = httpHelper.RequestSender(p[0], 0);
+                //_A.AsyncWaitHandle.WaitOne(10000);
+                //Thread.Sleep(50000);
+                //getAllNotices();
+                httpHelper.RequestSender(p[0], 6);
 
-                getAllNotices();
                 NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
             }
             catch (Exception er)

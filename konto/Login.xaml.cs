@@ -114,7 +114,7 @@ namespace konto
             myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
         }
 
-        public async void GetResponsetStreamCallback(IAsyncResult callbackResult)
+        public void GetResponsetStreamCallback(IAsyncResult callbackResult)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace konto
                         }
                     };
 
-                    await httpHelper.RequestSender(p[0], 0);
+                    httpHelper.RequestSender(p[0], 0);
                     Dispatcher.BeginInvoke(new Action(() => NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative))));
                 }
                 else

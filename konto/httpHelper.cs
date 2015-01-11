@@ -23,7 +23,7 @@ namespace konto
         private static ObservableCollection<Cookies> _cookieDetail;
 
         public static cookieDb cake;
-
+        public static System.IAsyncResult a;
         public static ObservableCollection<Cookies> cookies
         {
             get
@@ -73,7 +73,7 @@ namespace konto
             public string message { set; get; }
         }
 
-        internal static async Task<int> RequestSender(dynamic variableData, int variableUrl)
+        internal static IAsyncResult RequestSender(dynamic variableData, int variableUrl)
         {
             var config = new urlConfig();
             string AuthServiceUri;
@@ -129,8 +129,8 @@ namespace konto
             spAuthReq.ContentType = "application/json";
             spAuthReq.Method = "POST";
             spAuthReq.Headers["Authorization"] = config.apiKey();
-            spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
-            return 1;
+            return spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
+            //a.AsyncWaitHandle.WaitOne();
         }
 
         static void GetRequestStreamCallback(IAsyncResult callbackResult)
@@ -188,9 +188,9 @@ namespace konto
                         break;
                     case 6:
                         result = JsonConvert.DeserializeObject<RealDataYo>(responseString);
+                        RealDataYo _R = (RealDataYo)result;
                         if (result.status == 1)
                         {
-                            RealDataYo _R = (RealDataYo)result;
                             iterateSavingRealData(_R);
                         }
                         break;
@@ -213,6 +213,7 @@ namespace konto
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
+            
         }
 
         static public void addCookieInReq()
@@ -300,14 +301,20 @@ namespace konto
             loggedInPageHelper _loggedInPageHelper = new loggedInPageHelper();
             for (int i = 0; i < _result.negetive_name.Count; i++)
             {
-                RealData __realdata = new RealData
-                {
+                RealData __realdata = new RealData();
+                __realdata.Name = "You owe " + (string)_result.negetive_name[i];
+                __realdata.Amount = Convert.ToInt32(_result.negetive[i][3]);
+                __realdata.Notice_id = (string)_result.negetive[i][0];
+                __realdata.IsNegetive = true;
+                __realdata.IsPositive = false;
+                /*{
                     Name = "You owe " + (string)_result.negetive_name[i],
                     Amount = Int32.Parse((string)_result.negetive[i][3]),
                     Notice_id = (string)_result.negetive[i][0],
                     IsNegetive = true,
                     IsPositive = false
                 };
+                 * */
                 _loggedInPageHelper.realdatapopulator(__realdata);
             }
 
