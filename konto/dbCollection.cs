@@ -170,9 +170,9 @@ namespace konto
             {
                 if (_notice_id != value)
                 {
-                    NotifyPropertyChanging("Name");
+                    NotifyPropertyChanging("Notice_id");
                     _notice_id = value;
-                    NotifyPropertyChanged("Name");
+                    NotifyPropertyChanged("Notice_id");
                 }
             }
         }
@@ -445,6 +445,326 @@ namespace konto
         #endregion
     }
 
+    [Table]
+    public class RealData : INotifyPropertyChanging, INotifyPropertyChanged
+    {
+        /*
+         * Name
+         * Amount
+         * Notice_id
+         * IsNegetive
+         * IsPositive
+         * */
+
+        private int _dataId;
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int DataId
+        {
+            get
+            {
+                return _dataId;
+            }
+            set
+            {
+                if (_dataId != value)
+                {
+                    NotifyPropertyChanging("DataId");
+                    _dataId = value;
+                    NotifyPropertyChanged("DataId");
+                }
+            }
+        }
+
+        private string _name;
+        [Column(CanBeNull = true)]
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name != value)
+                {
+                    NotifyPropertyChanging("Name");
+                    _name = value;
+                    NotifyPropertyChanged("Name");
+                }
+            }
+        }
+
+        private string _notice_id;
+        [Column(CanBeNull = false)]
+        public string Notice_id
+        {
+            get
+            {
+                return _notice_id;
+            }
+            set
+            {
+                if (_notice_id != value)
+                {
+                    NotifyPropertyChanging("Notice_id");
+                    _notice_id = value;
+                    NotifyPropertyChanged("Notice_id");
+                }
+            }
+        }
+
+        private int _amount;
+        [Column(CanBeNull = true)]
+        public int Amount
+        {
+            get
+            {
+                return _amount;
+            }
+            set
+            {
+                if (_amount != value)
+                {
+                    NotifyPropertyChanging("Amount");
+                    _amount = value;
+                    NotifyPropertyChanged("Amount");
+                }
+            }
+        }
+
+        private bool _isPositive;
+        [Column(CanBeNull = true)]
+        public bool IsPositive
+        {
+            get
+            {
+                return _isPositive;
+            }
+            set
+            {
+                if (_isPositive != value)
+                {
+                    NotifyPropertyChanging("IsPositive");
+                    _isPositive = value;
+                    NotifyPropertyChanged("IsPositive");
+                }
+            }
+        }
+
+        private bool _isNegetive;
+        [Column(CanBeNull = true)]
+        public bool IsNegetive
+        {
+            get
+            {
+                return _isNegetive;
+            }
+            set
+            {
+                if (_isNegetive != value)
+                {
+                    NotifyPropertyChanging("IsNegetive");
+                    _isNegetive = value;
+                    NotifyPropertyChanged("IsNegetive");
+                }
+            }
+        }
+        // Version column aids update performance.
+        [Column(IsVersion = true)]
+        private Binary _version;
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify the page that a data context property changed
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanging Members
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        // Used to notify the data context that a data context property is about to change
+        private void NotifyPropertyChanging(string propertyName)
+        {
+            if (PropertyChanging != null)
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
+
+
+    [Table]
+    public class RealDataLocal : INotifyPropertyChanging, INotifyPropertyChanged
+    {
+        /*
+         * Name
+         * Amount
+         * Notice_id
+         * IsNegetive
+         * IsPositive
+         * */
+
+        private int _dataId;
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int DataId
+        {
+            get
+            {
+                return _dataId;
+            }
+            set
+            {
+                if (_dataId != value)
+                {
+                    NotifyPropertyChanging("DataId");
+                    _dataId = value;
+                    NotifyPropertyChanged("DataId");
+                }
+            }
+        }
+
+        private string _name;
+        [Column(CanBeNull = true)]
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name != value)
+                {
+                    NotifyPropertyChanging("Name");
+                    _name = value;
+                    NotifyPropertyChanged("Name");
+                }
+            }
+        }
+
+        private string _notice_id;
+        [Column(CanBeNull = false)]
+        public string Notice_id
+        {
+            get
+            {
+                return _notice_id;
+            }
+            set
+            {
+                if (_notice_id != value)
+                {
+                    NotifyPropertyChanging("Notice_id");
+                    _notice_id = value;
+                    NotifyPropertyChanged("Notice_id");
+                }
+            }
+        }
+
+        private int _amount;
+        [Column(CanBeNull = true)]
+        public int Amount
+        {
+            get
+            {
+                return _amount;
+            }
+            set
+            {
+                if (_amount != value)
+                {
+                    NotifyPropertyChanging("Amount");
+                    _amount = value;
+                    NotifyPropertyChanged("Amount");
+                }
+            }
+        }
+
+        private bool _isPositive;
+        [Column(CanBeNull = true)]
+        public bool IsPositive
+        {
+            get
+            {
+                return _isPositive;
+            }
+            set
+            {
+                if (_isPositive != value)
+                {
+                    NotifyPropertyChanging("IsPositive");
+                    _isPositive = value;
+                    NotifyPropertyChanged("IsPositive");
+                }
+            }
+        }
+
+        private bool _isNegetive;
+        [Column(CanBeNull = true)]
+        public bool IsNegetive
+        {
+            get
+            {
+                return _isNegetive;
+            }
+            set
+            {
+                if (_isNegetive != value)
+                {
+                    NotifyPropertyChanging("IsNegetive");
+                    _isNegetive = value;
+                    NotifyPropertyChanged("IsNegetive");
+                }
+            }
+        }
+        // Version column aids update performance.
+        [Column(IsVersion = true)]
+        private Binary _version;
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify the page that a data context property changed
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanging Members
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        // Used to notify the data context that a data context property is about to change
+        private void NotifyPropertyChanging(string propertyName)
+        {
+            if (PropertyChanging != null)
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
     public class DbDataContext : DataContext
     {
         public static string DBConnectionString = "Data Source=isostore:/Konto.sdf";

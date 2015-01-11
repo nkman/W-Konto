@@ -489,5 +489,17 @@ namespace konto
         public Positive positive { get; set; }
     }
 
-    
+    /*
+     * Main data classes
+     * */
+
+    public class RealDataYo
+    {
+        public List<string> negetive_name { get; set; }
+        public int status { get; set; }
+        public List<List<object>> negetive { get; set; }
+        public List<List<object>> positive { get; set; }
+        public List<string> positive_name { get; set; }
+        public int current_balance { get; set; }
+    }
 }

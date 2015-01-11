@@ -105,6 +105,10 @@ namespace konto
                     AuthServiceUri = config.addUrl();
                     json = JsonConvert.SerializeObject((transactionAdd)variableData);
                     break;
+                case 6:
+                     AuthServiceUri = config.getallUrl();
+                     json = "";
+                    break;
                 default:
                     AuthServiceUri = config.notificationUrl();
                     json = JsonConvert.SerializeObject((noticeGet)variableData);
@@ -178,6 +182,10 @@ namespace konto
                         break;
                     case 5:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
+                        break;
+                    case 6:
+                        result = JsonConvert.DeserializeObject<RealDataYo>(responseString);
+
                         break;
                     default:
                         result = JsonConvert.DeserializeObject<RootObject>(responseString);
