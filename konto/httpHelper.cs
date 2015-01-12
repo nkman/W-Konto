@@ -339,13 +339,13 @@ namespace konto
                 _loggedInPageHelper.realdatapopulator(__realdata);
             }
 
-            for (int i = 0; i < _result.positive_name.Count; i++)
+            for (int j = 0; j < _result.positive_name.Count; j++)
             {
                 RealData __realdata = new RealData
                 {
-                    Name = (string)_result.positive_name[i] + " owes you",
-                    Amount = Int32.Parse((string)_result.positive[i][3]),
-                    Notice_id = (string)_result.positive[i][0],
+                    Name = (string)_result.positive_name[j] + " owes you",
+                    Amount = Convert.ToInt32(_result.positive[j][3]),
+                    Notice_id = (string)_result.positive[j][0],
                     IsNegetive = true,
                     IsPositive = false
                 };

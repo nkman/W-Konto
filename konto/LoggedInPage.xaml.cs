@@ -482,8 +482,10 @@ namespace konto
                 account_id = (string)myValue,
                 decision = "Accept"
             };
+            notification.Remove(sender as Notification);
             httpHelper.RequestSender(n, 2);
             System.Diagnostics.Debug.WriteLine(n);
+            NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
         }
 
         private void butt2_click(object sender, EventArgs e)
@@ -495,7 +497,9 @@ namespace konto
                 account_id = (string)myValue,
                 decision = "Decline"
             };
+            notification.Remove(sender as Notification);
             httpHelper.RequestSender(n, 3);
+            NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
             System.Diagnostics.Debug.WriteLine(n);
         }
 
@@ -511,10 +515,9 @@ namespace konto
             try
             {
                 httpHelper.RequestSender(p[0], 0);
-                //_A.AsyncWaitHandle.WaitOne(10000);
-                //Thread.Sleep(50000);
                 getAllNotices();
                 getAllData();
+                
                 NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
             }
             catch (Exception er)
