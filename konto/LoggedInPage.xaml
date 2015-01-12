@@ -62,7 +62,7 @@
 
                             <StackPanel Orientation="Horizontal" Margin="5,10,0,5" Height="105" Width="432">
                                 <StackPanel Width="420" Margin="-10,-7,0,0">
-                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="-90,0,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290" FontSize="30" />
                                     <TextBlock Text="{Binding Amount}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
 
                                     <Button x:Name="butt1" Margin="240,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1_click">1</Button>
@@ -96,7 +96,7 @@
                             
                             <StackPanel Orientation="Horizontal" Margin="5,10,0,5" Height="105" Width="432">
                                 <StackPanel Width="420" Margin="-10,-7,0,0">
-                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="-90,0,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290" FontSize="30" />
                                     <TextBlock Text="{Binding Amount}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
 
                                     <Button x:Name="butt1" Margin="240,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1_click">1</Button>

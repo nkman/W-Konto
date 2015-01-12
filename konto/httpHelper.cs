@@ -170,15 +170,36 @@ namespace konto
                             RootObject R = (RootObject)result;
                             iterateSavingNotification(R);
                         }
+                        httpHelper.RequestSender("{}", 6);
                         break;
                     case 1:
                         result = JsonConvert.DeserializeObject<noticeRead>(responseString);
                         break;
                     case 2:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
+                        if (result.status == 1)
+                        {
+                            loggedInPageHelper _l = new loggedInPageHelper();
+                            noticeAcceptDeclineDelete __json = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(json);
+                            Notification n = new Notification
+                            {
+                                Notice_id = __json.account_id
+                            };
+                            _l.delFromNotificationHelper(n);
+                        }
                         break;
                     case 3:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
+                        if (result.status == 1)
+                        {
+                            loggedInPageHelper _l = new loggedInPageHelper();
+                            noticeAcceptDeclineDelete __json = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(json);
+                            Notification n = new Notification
+                            {
+                                Notice_id = __json.account_id
+                            };
+                            _l.delFromNotificationHelper(n);
+                        }
                         break;
                     case 4:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);

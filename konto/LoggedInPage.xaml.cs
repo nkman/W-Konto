@@ -176,10 +176,11 @@ namespace konto
             return _n;
         }
 
-        public void getAllData()
+        public List<RealData> getAllData()
         {
             var dataInDb = from RealData _realdata_ in userDB.realdata select _realdata_;
             realdata = new ObservableCollection<RealData>(dataInDb);
+            return realdata.ToList();
         }
 
         public List<Cookies> getAllCookieFromDB()
@@ -219,6 +220,40 @@ namespace konto
                     userDB.SubmitChanges();
                 }
             }
+
+            List<RealData> _R = getAllData();
+            foreach (RealData __R in _R)
+            {
+                realdata.Remove(__R);
+                userDB.realdata.DeleteOnSubmit(__R);
+                userDB.SubmitChanges();
+            }
+        }
+
+        public void delFromNotification(Notification n)
+        {
+            int breaker = 0;
+            List<List<Notification>> _n = getAllNotices();
+            foreach (List<Notification> __n in _n)
+            {
+                foreach (Notification ___n in __n)
+                {
+                    if (___n.Notice_id == n.Notice_id)
+                    {
+                        Notification ____n = ___n;
+                        NotifyPropertyChanging("notification");
+                        notification.Remove(____n);
+                        userDB.notification.DeleteOnSubmit(____n);
+                        userDB.SubmitChanges();
+                        NotifyPropertyChanged("notification");
+                        breaker = 1;
+                        break;
+                    }
+                    if (breaker == 1)
+                        break;
+                }
+            }
+
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -475,12 +510,11 @@ namespace konto
 
             try
             {
-                //System.IAsyncResult _A = httpHelper.RequestSender(p[0], 0);
+                httpHelper.RequestSender(p[0], 0);
                 //_A.AsyncWaitHandle.WaitOne(10000);
                 //Thread.Sleep(50000);
-                //getAllNotices();
-                httpHelper.RequestSender(p[0], 6);
-
+                getAllNotices();
+                getAllData();
                 NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
             }
             catch (Exception er)
@@ -522,6 +556,12 @@ namespace konto
             c = _loggedInPage.getAllCookieFromDB().Count;
             //UIThread.Invoke(() => return c);
             return c;
+        }
+
+        public void delFromNotificationHelper(Notification n)
+        {
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.delFromNotification(n));
         }
     }
 

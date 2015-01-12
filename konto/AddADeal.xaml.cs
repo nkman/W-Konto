@@ -43,6 +43,7 @@ namespace konto
             }
             System.Diagnostics.Debug.WriteLine(_t);
             httpHelper.RequestSender(_t, 5);
+            NavigationService.Navigate(new Uri("/LoggedInPage.xaml", UriKind.Relative));
         }
     }
 }
