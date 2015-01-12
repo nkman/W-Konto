@@ -256,6 +256,29 @@ namespace konto
 
         }
 
+        public void delFromRealData(RealData R)
+        {
+            int breaker = 0;
+            List<RealData> _R = getAllData();
+            foreach (RealData __R in _R)
+            {
+                if (__R.Notice_id == R.Notice_id)
+                {
+
+                    RealData ___R = __R;
+                    NotifyPropertyChanging("realdata");
+                    realdata.Remove(___R);
+                    userDB.realdata.DeleteOnSubmit(___R);
+                    userDB.SubmitChanges();
+                    NotifyPropertyChanged("realdata");
+                    breaker = 1;
+                    break;
+                }
+                if (breaker == 1)
+                    break;
+            }
+        }
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             //Removes Back stack entries.
@@ -503,6 +526,21 @@ namespace konto
             System.Diagnostics.Debug.WriteLine(n);
         }
 
+        private void butt3_click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var myValue = button.Tag;
+            httpHelper.noticeAcceptDeclineDelete n = new httpHelper.noticeAcceptDeclineDelete
+            {
+                account_id = (string)myValue,
+                decision = "Delete"
+            };
+            realdata.Remove(sender as RealData);
+            httpHelper.RequestSender(n, 4);
+            getAllData();
+            NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
+            System.Diagnostics.Debug.WriteLine(n);
+        }
         private void SyncNotice(object sender, EventArgs e)
         {
             var p = new List<httpHelper.noticeGet>
@@ -565,6 +603,17 @@ namespace konto
         {
             UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
             UIThread.Invoke(() => _loggedInPage.delFromNotification(n));
+        }
+
+        public void delFromRealDataHelper(RealData R)
+        {
+            UIThread.Invoke(() => _loggedInPage = new LoggedInPage());
+            UIThread.Invoke(() => _loggedInPage.delFromRealData(R));
+        }
+
+        public void showMessageBox(string message)
+        {
+            UIThread.Invoke(() => MessageBox.Show(message, "Konto", MessageBoxButton.OK));
         }
     }
 

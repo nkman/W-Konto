@@ -65,7 +65,7 @@
                                     <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="-90,0,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290" FontSize="30" />
                                     <TextBlock Text="{Binding Amount}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
 
-                                    <Button x:Name="butt1" Margin="330,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt1_click">
+                                    <Button x:Name="butt1" Margin="330,-65,10,0" Width="80" Height="80" Tag="{Binding Notice_id}" Click="butt3_click">
                                         <Image Source="appbar.delete.rest.png"/>
                                     </Button>
                                     

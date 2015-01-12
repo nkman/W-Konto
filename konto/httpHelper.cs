@@ -203,6 +203,16 @@ namespace konto
                         break;
                     case 4:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
+                        if (result.status == 1)
+                        {
+                            loggedInPageHelper _l = new loggedInPageHelper();
+                            noticeAcceptDeclineDelete __json = JsonConvert.DeserializeObject<noticeAcceptDeclineDelete>(json);
+                            RealData n = new RealData
+                            {
+                                Notice_id = __json.account_id
+                            };
+                            _l.delFromRealDataHelper(n);
+                        }
                         break;
                     case 5:
                         result = JsonConvert.DeserializeObject<noticeAcceptDeclineDeleteResponse>(responseString);
@@ -220,12 +230,10 @@ namespace konto
                         break;
                 }
 
-                if (result.status == 1)
+                if (result.status == 0)
                 {
-                    System.Diagnostics.Debug.WriteLine("Done");
-                }
-                else  if (result.status == 0)
-                {
+                    loggedInPageHelper _l = new loggedInPageHelper();
+                    _l.showMessageBox(result.message);
                     System.Diagnostics.Debug.WriteLine(result.message);
                 }
                 //System.Diagnostics.Debug.WriteLine(result.ToString());
