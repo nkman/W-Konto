@@ -30,7 +30,6 @@ namespace konto
         private ObservableCollection<Cookies> _cookieDetail;
         private ObservableCollection<Notification> _notification;
         private ObservableCollection<RealData> _realdata;
-        private ObservableCollection<RealDataLocal> _realdatalocal;
 
         public ObservableCollection<User> users
         {
@@ -79,23 +78,6 @@ namespace konto
                     NotifyPropertyChanging("realdata");
                     _realdata = value;
                     NotifyPropertyChanged("realdata");
-                }
-            }
-        }
-
-        public ObservableCollection<RealDataLocal> realdatalocal
-        {
-            get
-            {
-                return _realdatalocal;
-            }
-            set
-            {
-                if (_realdatalocal != value)
-                {
-                    NotifyPropertyChanging("realdatalocal");
-                    _realdatalocal = value;
-                    NotifyPropertyChanged("realdatalocal");
                 }
             }
         }
@@ -292,10 +274,6 @@ namespace konto
         {
             base.OnNavigatedFrom(e);
             userDB.SubmitChanges();
-            while (NavigationService.CanGoBack)
-            {
-                NavigationService.RemoveBackEntry();
-            }
         }
 
 
@@ -507,7 +485,6 @@ namespace konto
             };
             notification.Remove(sender as Notification);
             httpHelper.RequestSender(n, 2);
-            System.Diagnostics.Debug.WriteLine(n);
             NavigationService.Navigate(new Uri("/LoggedInPage.xaml?Refresh=true", UriKind.Relative));
         }
 

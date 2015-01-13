@@ -1,0 +1,92 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="konto.LocalPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <!-- LOCALIZATION NOTE:
+            To localize the displayed strings copy their values to appropriately named
+            keys in the app's neutral language resource file (AppResources.resx) then
+            replace the hard-coded text value between the attributes' quotation marks
+            with the binding clause whose path points to that string name.
+
+            For example:
+
+                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+
+            This binding points to the template's string resource named "ApplicationTitle".
+
+            Adding supported languages in the Project Properties tab will create a
+            new resx file per language that can carry the translated values of your
+            UI strings. The binding in these examples will cause the value of the
+            attributes to be drawn from the .resx file that matches the
+            CurrentUICulture of the app at run time.
+         -->
+
+        <!--Panorama control-->
+        <phone:Panorama>
+            <phone:Panorama.Background>
+                <ImageBrush ImageSource="/panoramaTest;component/Assets/PanoramaBackground.png"/>
+            </phone:Panorama.Background>
+
+            <!--Panorama item one-->
+            <phone:PanoramaItem Header="Deals">
+                <!--Single line list with text wrapping-->
+                <phone:LongListSelector Margin="0,-38,-22,2" x:Name="realDataBinding" ItemsSource="{Binding realdatalocal}">
+                    <phone:LongListSelector.ListHeaderTemplate>
+                        <DataTemplate>
+                            <Grid Margin="12,0,0,38">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ListHeaderTemplate>
+
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate x:Name="deal">
+
+                            <StackPanel Orientation="Horizontal" Margin="5,10,0,5" Height="105" Width="432">
+                                <StackPanel Width="420" Margin="-10,-7,0,0">
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="-90,0,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290" FontSize="30" />
+                                    <TextBlock Text="{Binding Amount}" TextWrapping="Wrap" Margin="-80,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" Width="290"/>
+
+                                    <Button x:Name="butt1" Margin="330,-65,10,0" Width="80" Height="80" Tag="{Binding DataId}" Click="butt3_click_local">
+                                        <Image Source="appbar.delete.rest.png"/>
+                                    </Button>
+
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+        </phone:Panorama>
+        
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Add a deal" Click="AddADeal"/>
+                <shell:ApplicationBarMenuItem Text="Credits" Click="ShowCredits"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+
+</phone:PhoneApplicationPage>

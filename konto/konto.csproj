@@ -94,6 +94,9 @@
     <Compile Include="AddADeal.xaml.cs">
       <DependentUpon>AddADeal.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddLocalDeal.xaml.cs">
+      <DependentUpon>AddLocalDeal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -103,6 +106,9 @@
     <Compile Include="dbCollection.cs" />
     <Compile Include="httpHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="LocalPage.xaml.cs">
+      <DependentUpon>LocalPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoggedInPage.xaml.cs">
       <DependentUpon>LoggedInPage.xaml</DependentUpon>
     </Compile>
@@ -132,7 +138,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddLocalDeal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Credits.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LocalPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
